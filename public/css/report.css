@@ -1,0 +1,7 @@
+@font-face{
+    font-family: kh;
+    src: url(../fonts/KhmerOSsiemreap.ttf);
+}
+body{
+    font-family: kh;
+}

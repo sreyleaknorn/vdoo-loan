@@ -1,0 +1,75 @@
+@font-face{
+    font-family: kh;
+    src: url('../fonts/KhmerOSsiemreap.ttf');
+}
+
+/* new custom */
+.apps{
+    padding-top: 18px;
+    width: 450px;
+    border: 1px solid #ccc;
+}
+.box{
+    width: 90%;
+    margin: auto;
+    text-align: center;
+}
+.logo {
+    margin-top: -47px;
+}
+.mx-left {
+    margin-left: 18px !important;
+}
+.sidebar-nav > li.active a {
+    background: #343a40 !important;
+}
+.search_input {
+    padding: 1px;
+    font-size: 14px;
+}
+.text-small {
+    font-size: 11px;
+}
+.hide{
+    display: none;
+}
+
+.input-group-append>.btn{
+    border-top-right-radius: 3px;
+    border-top-left-radius: 3px!important;
+    padding: 5px 9px;
+}
+.header{
+	height: 45px;
+}
+.name{
+	font-size: 13px;
+}
+.toolbox{
+    padding-top: 5px;
+	background: #f0f3f6;
+
+}
+.btn.btn-oval
+{
+	border-radius: 5px;
+}
+.app .content {
+    padding: 44px 40px 85px 40px;
+}
+.btn-sm{
+    font-size: 13px;
+}
+.input-group {
+    margin-bottom: 0!important;
+}
+td.action a, td.action a:link
+{
+    text-decoration: none!important;
+}
+label{
+    font-weight: normal!important;
+}
+#bbx input, #bbx button{
+    margin-top: 2px;
+}
