@@ -29,7 +29,7 @@
                             <i class="fa fa-arrow-right"></i>
                         </div>
                         <div class="stat text-primary">
-                            <div class="value"> {{$c1}} </div>
+                            <div class="value"> 0 </div>
                             <div class="name"> Today </div>
                         </div>
                         <div class="progress stat-progress">
@@ -42,7 +42,7 @@
                             <i class="fa fa-circle"></i>
                         </div>
                         <div class="stat text-success">
-                            <div class="value"> {{$c2}} </div>
+                            <div class="value">  </div>
                             <div class="name"> This Month </div>
                         </div>
                         <div class="progress stat-progress">
@@ -54,7 +54,7 @@
                             <i class="fa fa-arrow-right"></i>
                         </div>
                         <div class="stat text-info">
-                            <div class="value"> {{$c3}} </div>
+                            <div class="value"> 0 </div>
                             <div class="name"> This Year </div>
                         </div>
                         <div class="progress stat-progress">
@@ -66,7 +66,7 @@
                             <i class="fa fa-star"></i>
                         </div>
                         <div class="stat">
-                            <div class="value"> {{$c4}} </div>
+                            <div class="value">  </div>
                             <div class="name"> So Far</div>
                         </div>
                         <div class="progress stat-progress">
@@ -98,14 +98,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                           @foreach($invoices as $in)
-                                <tr>
-                                    <td><a href="{{url('invoice/detail/'.$in->id)}}">INV00{{$in->id}}</a></td>
-                                    <td>{{$in->company_name}}</td>
-                                    <td>{{$in->due_date}}</td>
-                                    <td>$ {{$in->due_amount}}</td>
-                                </tr>
-                           @endforeach
+                           
                         </tbody>
                     </table>
                     <a href="#" class='text-sm text-success'>View All >></a>
@@ -130,7 +123,7 @@
                             <i class="fa fa-dollar"></i>
                         </div>
                         <div class="stat text-primary">
-                            <div class="value"> $ {{$p1}} </div>
+                            <div class="value"> $ 0 </div>
                             <div class="name"> Today </div>
                         </div>
                         <div class="progress stat-progress">
@@ -143,7 +136,7 @@
                             <i class="fa fa-dollar"></i>
                         </div>
                         <div class="stat text-success">
-                            <div class="value"> $ {{$p2}} </div>
+                            <div class="value"> $ 0 </div>
                             <div class="name"> This Month </div>
                         </div>
                         <div class="progress stat-progress">
@@ -155,7 +148,7 @@
                             <i class="fa fa-dollar"></i>
                         </div>
                         <div class="stat text-info">
-                            <div class="value"> $ {{$p3}} </div>
+                            <div class="value"> $ 0 </div>
                             <div class="name"> This Year </div>
                         </div>
                         <div class="progress stat-progress">
@@ -167,7 +160,7 @@
                             <i class="fa fa-dollar"></i>
                         </div>
                         <div class="stat">
-                            <div class="value"> $ {{$p4}} </div>
+                            <div class="value"> $ 0 </div>
                             <div class="name"> So Far</div>
                         </div>
                         <div class="progress stat-progress">

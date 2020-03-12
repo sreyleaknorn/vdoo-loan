@@ -12,6 +12,15 @@
         <link rel="stylesheet" href="{{asset('fontawesome/css/all.min.css')}}" >
         <link rel="stylesheet" href="{{asset('css/custom.css')}}" >
         <link rel="stylesheet" href="{{asset('css/component-chosen.css')}}" >
+		<link href="https://fonts.googleapis.com/css?family=Battambang&display=swap" rel="stylesheet">
+		<style>
+
+                body {
+               font-family: Battambang , Arial, Helvetica, sans-serif;
+            }
+              
+		  
+		</style>
         @yield('css')
     </head>
     <body>
@@ -60,90 +69,19 @@
                             <ul class="sidebar-menu metismenu" id="sidebar-menu">
                                 <li id='menu_dashboard'>
                                     <a href="{{url('/')}}">
-                                        1. Dashboard</a>
+                                        ​១. ទំព័រដើម </a>
                                 </li>
-                                <li id="menu_invoice">
-                                    <a href="{{url('invoice')}}">2. Invoices</a>
+                                <li id='menu_customer'>
+                                    <a href="{{url('/')}}">
+                                        ​២. អតិថិជន </a>
                                 </li>
-                                <li id="menu_customer">
-                                    <a href="{{url('customer')}}">3. Customers</a>
+								<li id='menu_phone_shop'>
+                                    <a href="{{url('/')}}">
+                                        ​៣.  ហាងទូរស័ព្ទ</a>
                                 </li>
-                                <li id="menu_product">
-                                    <a href="{{url('product')}}">4. Products</a>
-                                </li>
-                                <li id="menu_stockin">
-                                    <a href="{{url('in')}}">5. Stock In</a>
-                                </li>
-                                <li id="menu_stockout">
-                                    <a href="{{url('out')}}">6. Stock Out</a>
-                                </li>
-                                <li id="menu_report">
-                                    <a href="">
-                                        7. Reports <i class="fa arrow"></i>
-                                    </a>
-                                    <ul class="sidebar-nav" id="report_collapse">
-                                        <li id="menu_onhand_report">
-                                            <a href="{{url('report/onhand')}}">
-                                                7.1 Stock Balance
-                                            </a>
-                                        </li>
-                                        <li id="menu_sale_report">
-                                            <a href="{{url('report/sale')}}">
-                                                7.2 Sale Detail
-                                            </a>
-                                        </li>
-                                        <li id="menu_salesummary_report">
-                                            <a href="{{url('report/sale/summary')}}">
-                                                7.3 Sale Summary
-                                            </a>
-                                        </li>
-                                        <li id="menu_salecustomer_report">
-                                            <a href="{{url('report/customer')}}">
-                                                7.4 Sale By Customer
-                                            </a>
-                                        </li>
-                                        <li id="menu_stockin_report">
-                                            <a href="{{url('report/in')}}">
-                                                7.5 Stock In Detail
-                                            </a>
-                                        </li>
-                                        <li id="menu_stockin_summary">
-                                            <a href="{{url('report/in/summary')}}">
-                                                7.6 Stock In Summary
-                                            </a>
-                                        </li>
-                                        <li id="menu_stockout_report">
-                                            <a href="{{url('report/out')}}">
-                                                7.7 Stock Out Detail
-                                            </a>
-                                        </li>
-                                        <li id="menu_stockout_summary">
-                                            <a href="{{url('report/out/summary')}}">
-                                                7.8 Stock Out Summary
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li id="menu_config">
-                                    <a href="">
-                                        8. Settings <i class="fa arrow"></i>
-                                    </a>
-                                    <ul class="sidebar-nav" id="config_collapse">
-                                        <li id="menu_category">
-                                            <a href="{{route('category.index')}}">8.1 Category</a>
-                                        </li>
-                                        <li id="menu_unit">
-                                            <a href="{{url('unit')}}">8.2 Unit</a>
-                                        </li>
-                                        <li id="menu_exchange">
-                                            <a href="{{url('exchange')}}">8.3 Exchange</a>
-                                        </li>
-                                        <li id="menu_company">
-                                            <a href="{{url('company')}}">
-                                                8.4 Company
-                                            </a>
-                                        </li>
-                                    </ul>
+								<li id='menu_loan'>
+                                    <a href="{{url('/')}}">
+                                        ​៤.  រំលស់</a>
                                 </li>
                                 <li  id="menu_security">
                                     <a href="">
