@@ -1,15 +1,15 @@
 @extends('layouts.master')
 @section('header')
-    <strong>បង្កើតអតិថិជន</strong>
+    <strong>បង្កើតហាងទូរស័ព្ទ</strong>
 @endsection
 @section('content')
-<form action="{{url('customer/save')}}" method="POST" enctype="multipart/form-data">
+<form action="{{url('phoneshop/save')}}" method="POST" enctype="multipart/form-data">
 <div class="card card-gray">
 	<div class="toolbox">
         <button class="btn btn-primary btn-oval btn-sm">
             <i class="fa fa-save"></i> រក្សាទុក
         </button>
-        <a href="{{url('customer')}}" class="btn btn-warning btn-oval btn-sm">
+        <a href="{{url('phoneshop')}}" class="btn btn-warning btn-oval btn-sm">
             <i class="fa fa-reply"></i> ត្រលប់ក្រោយ
         </a>
     </div>
@@ -36,6 +36,12 @@
                             value="{{old('phone')}}">
                     </div>
                 </div>
+				<div class="form-group row">
+                    <label for="address" class="col-sm-3">អាសយដ្ឋាន </label>
+                    <div class="col-sm-9">
+						<textarea class="form-control" id="address" name="address">{{old('address')}}</textarea>
+                    </div>
+                </div>
                 
             </div>
             
@@ -53,13 +59,9 @@
         $(document).ready(function () {
             $("#sidebar-menu li ").removeClass("active open");
 			
-            $("#menu_customer").addClass("active");
+            $("#menu_phone_shop").addClass("active");
            
         });
-        CKEDITOR.replace('condition');
-        function loadFile(e){
-            var output = document.getElementById('img');
-            output.src = URL.createObjectURL(e.target.files[0]);
-        }
+        
     </script>
 @endsection

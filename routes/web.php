@@ -37,10 +37,13 @@ Route::get('company', 'CompanyController@index');
 Route::get('company/edit/{id}', 'CompanyController@edit');
 Route::post('company/save', 'CompanyController@save');
 
-Route::resource('category', 'CategoryController')
-    ->except(['show','destroy']);
-Route::get('category/delete/{id}', 'CategoryController@delete')
-    ->name('category.delete');
+Route::get('phoneshop', 'PhoneshopController@index');
+Route::get('phoneshop/create', 'PhoneshopController@create');
+Route::get('phoneshop/delete', 'PhoneshopController@delete');
+Route::get('phoneshop/edit/{id}', 'PhoneshopController@edit');
+Route::post('phoneshop/save', 'PhoneshopController@save');
+Route::post('phoneshop/update', 'PhoneshopController@update');	
+	
 
 Route::get('unit', 'UnitController@index');
 Route::get('unit/create', 'UnitController@create');
@@ -69,13 +72,11 @@ Route::get('product/unit/save', 'ProductController@save_unit');
 
 Route::get('customer', 'CustomerController@index');
 Route::get('customer/create', 'CustomerController@create');
-Route::get('set/price', 'CustomerController@update_price');
 Route::get('customer/delete', 'CustomerController@delete');
 Route::get('customer/edit/{id}', 'CustomerController@edit');
 Route::post('customer/save', 'CustomerController@save');
-Route::post('customer/save1', 'CustomerController@save1');
 Route::post('customer/update', 'CustomerController@update');
-Route::get('customer/detail/{id}', 'CustomerController@detail');
+
 
 Route::get('invoice', 'InvoiceController@index');
 Route::get('invoice/create', 'InvoiceController@create');

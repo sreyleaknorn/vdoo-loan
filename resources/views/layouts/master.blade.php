@@ -72,11 +72,11 @@
                                         ​១. ទំព័រដើម </a>
                                 </li>
                                 <li id='menu_customer'>
-                                    <a href="{{url('/')}}">
+                                    <a href="{{url('/customer')}}">
                                         ​២. អតិថិជន </a>
                                 </li>
 								<li id='menu_phone_shop'>
-                                    <a href="{{url('/')}}">
+                                    <a href="{{url('/phoneshop')}}">
                                         ​៣.  ហាងទូរស័ព្ទ</a>
                                 </li>
 								<li id='menu_loan'>
