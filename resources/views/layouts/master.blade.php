@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="{{asset('css/custom.css')}}" >
         <link rel="stylesheet" href="{{asset('css/component-chosen.css')}}" >
 		<link href="https://fonts.googleapis.com/css?family=Battambang&display=swap" rel="stylesheet">
+		
 		<style>
 
                 body {
@@ -79,9 +80,31 @@
                                     <a href="{{url('/phoneshop')}}">
                                         ​៣.  ហាងទូរស័ព្ទ</a>
                                 </li>
-								<li id='menu_loan'>
-                                    <a href="{{url('/')}}">
-                                        ​៤.  រំលស់</a>
+								
+								<li id="menu_loan">
+                                    <a href=""> ៤. រំលស់ <i class="fa arrow"></i>
+                                    </a>
+                                    <ul class="sidebar-nav" id="config_collapse">
+                                        
+                                        <li id="menu_all_loan">
+                                            <a href="{{url('/loan')}}">
+													៤.១. រំលស់
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+								<li id="menu_config">
+                                    <a href="">
+                                        8. Settings <i class="fa arrow"></i>
+                                    </a>
+                                    <ul class="sidebar-nav" id="config_collapse">
+                                        
+                                        <li id="menu_company">
+                                            <a href="{{url('company')}}">
+                                                8.4 Company
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </li>
                                 <li  id="menu_security">
                                     <a href="">

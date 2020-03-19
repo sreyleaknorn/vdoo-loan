@@ -44,32 +44,6 @@ Route::get('phoneshop/edit/{id}', 'PhoneshopController@edit');
 Route::post('phoneshop/save', 'PhoneshopController@save');
 Route::post('phoneshop/update', 'PhoneshopController@update');	
 	
-
-Route::get('unit', 'UnitController@index');
-Route::get('unit/create', 'UnitController@create');
-Route::post('unit/store', 'UnitController@store');
-Route::get('unit/edit/{id}', 'UnitController@edit');
-Route::post('unit/update', 'UnitController@update');
-Route::get('unit/delete/{id}', 'UnitController@delete');
-Route::get('exchange', 'ExchangeController@index');
-Route::get('exchange/edit/{id}', 'ExchangeController@edit');
-Route::post('exchange/save', 'ExchangeController@save');
-
-// product
-Route::get('product', 'ProductController@index');
-Route::get('product/create', 'ProductController@create');
-Route::post('product/import', 'ProductController@import');
-Route::get('product/export', 'ProductController@export');
-Route::get('product/search', 'ProductController@search');
-Route::get('product/delete', 'ProductController@delete');
-Route::get('product/detail/{id}', 'ProductController@detail');
-Route::get('product/edit/{id}', 'ProductController@edit');
-Route::post('product/save', 'ProductController@save');
-Route::post('product/update', 'ProductController@update');
-// Route::get('product/unit/{id}', 'ProductController@get_unit');
-Route::get('product/category/save', 'ProductController@save_category');
-Route::get('product/unit/save', 'ProductController@save_unit');
-
 Route::get('customer', 'CustomerController@index');
 Route::get('customer/create', 'CustomerController@create');
 Route::get('customer/delete', 'CustomerController@delete');
@@ -77,20 +51,16 @@ Route::get('customer/edit/{id}', 'CustomerController@edit');
 Route::post('customer/save', 'CustomerController@save');
 Route::post('customer/update', 'CustomerController@update');
 
-
-Route::get('invoice', 'InvoiceController@index');
-Route::get('invoice/create', 'InvoiceController@create');
-Route::get('invoice/payment', 'InvoiceController@payment');
-Route::post('invoice/payment/save', 'InvoiceController@save_payment');
-Route::get('invoice/delete/{id}', 'InvoiceController@delete');
-Route::get('invoice/detail/{id}', 'InvoiceController@detail');
-Route::get('invoice/print/{id}', 'InvoiceController@print');
-Route::post('invoice/save', 'InvoiceController@save');
-Route::post('product/save1', 'InvoiceController@save_product1');
-Route::get('invoice/payment/delete/{id}', 'InvoiceController@delete_payment');
-// product price
-Route::get('product/price/{id}', 'InvoiceController@get_price');
-Route::get('getvat/{id}', 'InvoiceController@get_vat');
+// loan
+Route::get('loan', 'LoanController@index');
+Route::get('loan/create', 'LoanController@create');
+Route::get('loan/test', 'LoanController@test');
+Route::post('loan/save', 'LoanController@save');
+Route::get('loan/detail/{id}', 'LoanController@detail');
+Route::get('loan/print/{id}', 'LoanController@print');
+Route::get('loan/pay/{id}', 'LoanController@pay');
+Route::get('loan/delete', 'LoanController@delete');
+Route::post('loan/save_payment', 'LoanController@save_payment');
 
     // stock in
 Route::get('in', 'StockinController@index');
