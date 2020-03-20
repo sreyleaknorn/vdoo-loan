@@ -29,12 +29,7 @@
                     
                     <div class="row">
                         <div class="col-sm-6">
-							<div class="form-group row">
-                                <label for="customer_id" class="col-sm-5 form-control-label">លេខសំគាល់ </label>
-                                <div class="col-sm-7">
-                                    : L{{sprintf("%04s",$loan->id)}}
-                                </div>
-                            </div>
+							
                             <div class="form-group row">
                                 <label for="customer_id" class="col-sm-5 form-control-label">ឈ្មោះអតិថិជន </label>
                                 <div class="col-sm-7">
@@ -42,7 +37,7 @@
                                 </div>
                             </div>
 							<div class="form-group row">
-                                <label for="customer_id" class="col-sm-5 form-control-label">លេខទូរស័ព្ទ </label>
+                                <label for="customer_id" class="col-sm-5 form-control-label">លេខទូរស័ព្ទអតិថិជន </label>
                                 <div class="col-sm-7">
                                     : {{$loan->phone}}
                                 </div>
@@ -51,6 +46,24 @@
                                 <label for="customer_id" class="col-sm-5 form-control-label">ហាងទូរស័ព្ទ </label>
                                 <div class="col-sm-7">
                                     : {{$loan->shop_name}}
+                                </div>
+                            </div>
+							<div class="form-group row">
+                                <label for="customer_id" class="col-sm-5 form-control-label">ឈ្មោះទូរស័ព្ទ </label>
+                                <div class="col-sm-7">
+                                    : {{$loan->model_name}}
+                                </div>
+                            </div>
+							<div class="form-group row">
+                                <label for="customer_id" class="col-sm-5 form-control-label">លេខ​សម្គាល់ </label>
+                                <div class="col-sm-7">
+                                    : {{$loan->serial}}
+                                </div>
+                            </div>
+							<div class="form-group row">
+                                <label for="customer_id" class="col-sm-5 form-control-label">លេខបុង </label>
+                                <div class="col-sm-7">
+                                    : {{$loan->bill_no}}
                                 </div>
                             </div>
 							<div class="form-group row">
@@ -73,7 +86,12 @@
                             </div>
                         </div>
                         <div class="col-sm-6">
-                            
+                            <div class="form-group row">
+                                <label for="customer_id" class="col-sm-5 form-control-label">លេខសំគាល់ </label>
+                                <div class="col-sm-7">
+                                    : L{{sprintf("%04s",$loan->id)}}
+                                </div>
+                            </div>
                             <div class="form-group row">
                                 <label for="due_date" class="col-sm-5 form-control-label">ចំនួនខ្ចី</label>
                                 <div class="col-sm-7">
@@ -114,6 +132,12 @@
                                 <label for="due_date" class="col-sm-5 form-control-label">រយៈពេល</label>
                                 <div class="col-sm-7">
                                     : {{$loan->num_repayment . ' ('.$loan->repayment_type.')'}}
+                                </div>
+                            </div>
+							<div class="form-group row">
+                                <label for="due_date" class="col-sm-5 form-control-label">កំណត់ចំណាំ</label>
+                                <div class="col-sm-7">
+                                    : {{$loan->note}}
                                 </div>
                             </div>
                         </div>

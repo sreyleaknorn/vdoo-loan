@@ -27,8 +27,7 @@
             {{csrf_field()}}
 		    <div class="row">
             
-                <div class="col-sm-7">
-                
+                <div class="col-sm-6">
                     <div class="form-group row">
                         <label class="col-sm-3">Company (KH)</label>
                         <div class="col-sm-9">
@@ -73,7 +72,7 @@
                     </div>
                     
                 </div>
-                <div class="col-sm-5">
+                <div class="col-sm-6">
                     <div class="form-group row">
                         <label class="col-sm-3">VATIN</label>
                         <div class="col-sm-9">

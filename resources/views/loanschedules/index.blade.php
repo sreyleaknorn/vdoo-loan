@@ -10,69 +10,78 @@
 		</a> -->
 	</div>
 	<div class="card-block">
-        @component('coms.alert')
-        @endcomponent
-		<table class="table table-sm table-bordered">
-            <thead class="flip-header">
-                <tr>
-                    <th>#</th>
-                    <th>លេខសំគាល់</th>
-                    <th>អតិថិជន</th>
-                    <th>ហាង</th>
-                    <th>ថ្ងៃត្រូវបង់</th>
-                    <th>ប្រាក់ដើម</th>
-                    <th>ការប្រាក់</th>
-                    <th>ចំនួនសរុប</th>
-                    <th>ចំនួនបានបង់</th>
-                    <th>ចំនួននៅខ្វះ</th>
-                    <th>ថ្ងៃបានបង់</th>
-                    <th>សកម្មភាព</th>
-				</tr>
-			</thead>
-            <tbody>			
-                <?php
-                    $pagex = @$_GET['page'];
-                    if(!$pagex)
-					$pagex = 1;
-                    $i = config('app.row') * ($pagex - 1) + 1;
-				?>
-                @foreach($loanschedules as $ls)
-				<?php 
-					$txt_class = '';
-					if($ls->pay_date < date('Y-m-d') && $ls->ispaid == 0){
-						$txt_class = 'text-danger';
-					}
-				?>
-				<tr class="{{$txt_class}}">
-					<td>{{$i++}}</td>
-					<td>
-						<a href="{{url('loan/detail/'.$ls->loan_id )}}"><span class="text-teal"><strong>L{{sprintf("%04s",$ls->loan_id )}}</strong></span></a>   
-					</td>
-					<td>{{$ls->name}}</td>
-					<td>{{$ls->shop_name}}</td>
-					<td>{{$ls->pay_date}}</td>
-					<td>${{number_format($ls->principal_amount,3)}}</td>
-					<td>${{number_format($ls->interest_amount,3)}}</td>
-					<td>${{number_format($ls->total_amount,3)}}</td>
-					<td>${{number_format($ls->paid_amount,3)}}</td>
-					<td>${{number_format($ls->due_amount,3)}}</td>
-					<td>{{$ls->paid_date}}</td>
-					<td class="action">
+		
+		@component('coms.alert')
+		@endcomponent
+		
+		<div class="table-flip-scroll">
+			<div class="table-responsive">
+				<table class="table table-sm table-striped table-bordered table-hover flip-content">
+					<thead class="flip-header" >
+						<tr>
+							<th>#</th>
+							<th>លេខសំគាល់</th>
+							<th>អតិថិជន</th>
+							<th>ហាង</th>
+							<th>ថ្ងៃត្រូវបង់</th>
+							<th>ប្រាក់ដើម</th>
+							<th>ការប្រាក់</th>
+							<th>ចំនួនសរុប</th>
+							<th>ចំនួនបានបង់</th>
+							<th>ចំនួននៅខ្វះ</th>
+							<th>ថ្ងៃបានបង់</th>
+							<th>សកម្មភាព</th>
+						</tr>
+					</thead>
+					<tbody>			
 						<?php
-							if($ls->ispaid == 0){
-							?>
-							<a href="{{url('loan/pay/'.$ls->id)}}" class="btn btn-primary-outline btn-oval btn-sm mx-left"> 
-							<i class="fa fa-dollar"></i> បង់ប្រាក់</a>
-							<?php
+							$pagex = @$_GET['page'];
+							if(!$pagex)
+							$pagex = 1;
+							$i = config('app.row') * ($pagex - 1) + 1;
+						?>
+						@foreach($loanschedules as $ls)
+						<?php 
+							$txt_class = '';
+							if($ls->pay_date < date('Y-m-d') && $ls->ispaid == 0){
+								$txt_class = 'text-danger';
 							}
 						?>
-						
-					</td>
-				</tr>
-                @endforeach
-			</tbody>
-		</table>
-        {{$loanschedules->links()}}
+						<tr class="{{$txt_class}}" >
+							<td>{{$i++}}</td>
+							<td>
+								<a href="{{url('loan/detail/'.$ls->loan_id )}}"><span class="text-teal"><strong>L{{sprintf("%04s",$ls->loan_id )}}</strong></span></a>   
+							</td>
+							<td>{{$ls->name}}</td>
+							<td>{{$ls->shop_name}}</td>
+							<td>{{$ls->pay_date}}</td>
+							<td>${{number_format($ls->principal_amount,3)}}</td>
+							<td>${{number_format($ls->interest_amount,3)}}</td>
+							<td>${{number_format($ls->total_amount,3)}}</td>
+							<td>${{number_format($ls->paid_amount,3)}}</td>
+							<td>${{number_format($ls->due_amount,3)}}</td>
+							<td>{{$ls->paid_date}}</td>
+							<td class="action">
+								<?php
+									if($ls->ispaid == 0){
+									?>
+									<a href="{{url('loan/pay/'.$ls->id)}}" class="btn btn-primary-outline btn-oval btn-sm mx-left"> 
+									<i class="fa fa-dollar"></i> បង់ប្រាក់</a>
+									<?php
+									}
+								?>
+								
+							</td>
+						</tr>
+						@endforeach
+					</tbody>
+				</table>
+				
+			</div>
+		</div>
+		
+		{{$loanschedules->links()}}
+		
 		
 	</div>
 </div>
@@ -89,5 +98,5 @@
 		$("#menu_all_loanschedule").addClass("active");
 	});
 	
-</script>
-@endsection
+	</script>
+	@endsection	

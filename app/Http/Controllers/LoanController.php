@@ -67,6 +67,7 @@
             'shop_id' => $request->shop_id,
             'model_name' => $request->model_name,
             'serial' => $request->serial,
+            'bill_no' => $request->bill_no,
             'loan_amount' => $request->loan_amount,
             'loan_interest' => $request->loan_interest,
             'loan_date' => $request->loan_date,

@@ -20,7 +20,9 @@
                font-family: Battambang , Arial, Helvetica, sans-serif;
             }
               
-		  
+			.table tr {
+			white-space: nowrap;
+			}
 		</style>
         @yield('css')
     </head>

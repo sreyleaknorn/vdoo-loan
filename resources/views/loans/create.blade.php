@@ -55,7 +55,7 @@
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="model_name" class="col-sm-3">ទូរស័ព្ទ </label>
+						<label for="model_name" class="col-sm-3">ឈ្មោះទូរស័ព្ទ </label>
 						<div class="col-sm-8">
 							<input type="text" class="form-control" id="model_name" name="model_name" 
                             value="{{old('model_name')}}">
@@ -69,6 +69,14 @@
                             value="{{old('serial')}}">
 						</div>
 					</div>
+					<div class="form-group row">
+						<label for="bill_no" class="col-sm-3">លេខបុង </label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" id="bill_no" name="bill_no" 
+                            value="{{old('bill_no')}}">
+						</div>
+					</div>
+					
 					<div class="form-group row">
 						<label class="col-sm-3" >រំលស់ចំនួន ($)<span class="text-danger">*</span></label>
 						<div class="col-sm-8">
