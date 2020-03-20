@@ -3,8 +3,8 @@
 	namespace App\Http\Controllers;
 	
 	use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
-use App\Http\Controllers\Right;
+	use Illuminate\Routing\Controller;
+	use App\Http\Controllers\Right;
 	use DB;
 	use Carbon\Carbon;
 	
@@ -22,6 +22,7 @@ use App\Http\Controllers\Right;
 			->join('phone_shops', 'phone_shops.id', '=', 'loans.shop_id')
 			->select('loans.*', 'customers.name', 'customers.phone' , 'phone_shops.name as shop_name')
 			->where('loans.active', 1)
+			->orderBy('loans.id' , 'DESC')
 			->paginate(config('app.row'));
             return view('loans.index', $data);
 		}
@@ -115,6 +116,9 @@ use App\Http\Controllers\Right;
 			$data['loanschedules'] = DB::table('loanschedules')
 			->where([['active',1], ['loan_id' , $id]])
 			->get();
+			$data['loanpayments'] = DB::table('loanpayments')
+			->where([['active',1], ['loan_id' , $id]])
+			->get();
 			return view('loans.detail', $data);
 			
 		}
@@ -145,7 +149,7 @@ use App\Http\Controllers\Right;
             'receive_amount' => 'required'
 			]);
 			if($request->receive_amount == 0){
-				$request->session()->flash('success', 'ចំនួនទទួលបានត្រូវតែធំជាង ០ !');
+				$request->session()->flash('error', 'ចំនួនទឹកប្រាក់ដែលទទួលបានត្រូវតែធំជាង ០ !');
 				return redirect('/loan/detail/'.$request->loan_id);
 			}
 			/// add to loanpayments table
@@ -192,7 +196,7 @@ use App\Http\Controllers\Right;
 			if($due_amount <= 0 ||  $due_amount < 0.01){
 				$status = 'paid';
 				$paid_date = $request->receive_date;
-			}else {
+				}else {
 				$status = 'paying';
 				$paid_date = null;
 			}
@@ -209,6 +213,80 @@ use App\Http\Controllers\Right;
             ->update($data_loan);
 			$request->session()->flash('success', 'ប្រាក់បានបង់ដោយជោគជ័យ !');
 			return redirect('/loan/detail/'.$request->loan_id);
+		}
+		
+		public function delete_payment(Request $r)
+		{
+			if(!Right::check('loan', 'd')){
+				return view('permissions.no');
+			}
+			
+			
+			$pm = DB::table('loanpayments')
+			->where('id', $r->id)
+			->first();
+			
+			$receive_amount = $pm->receive_amount;
+			$loanschedule_id = $pm->loanschedule_id;
+			$loan_id = $pm->loan_id;
+			
+			/* schedule */
+			$schedule = DB::table('loanschedules')
+			->where('id', $loanschedule_id)
+			->first();
+			
+			$sc_paid_amount = $schedule->paid_amount - $receive_amount;
+			$sc_due_amount = $schedule->due_amount + $receive_amount;
+			if($sc_due_amount > 0 ){
+				$ispaid = 0;
+				$paid_date = null;
+				}else {
+				$ispaid = 1;
+				$paid_date = $schedule->paid_date;
+			}
+			$data_schedule = array(
+			'due_amount' => $sc_due_amount,
+			'paid_amount' => $sc_paid_amount,
+			'paid_date' => $paid_date,
+			'ispaid' => $ispaid
+			);
+			DB::table('loanschedules')
+            ->where('id', $loanschedule_id)
+            ->update($data_schedule);
+			
+			/*loan */
+			$loan = DB::table('loans')
+			->where('id', $loan_id)
+			->first();
+			
+			$loan_paid_amount = $loan->paid_amount - $receive_amount;
+			$loan_due_amount = $loan->due_amount + $receive_amount;
+			if($loan_due_amount <= 0 ||  $loan_due_amount < 0.01){
+				$status = 'paid';
+				$paid_date = $loan->paid_date;
+				}else {
+				$status = 'paying';
+				$paid_date = null;
+			}
+			
+			$data_loan = array(
+			'due_amount' => $loan_due_amount,
+			'paid_amount' => $loan_paid_amount,
+			'paid_date' => $paid_date,
+			'status' => $status
+			);
+			
+			DB::table('loans')
+            ->where('id', $loan_id)
+            ->update($data_loan);
+			
+			
+			DB::table('loanpayments')
+            ->where('id', $r->id)
+            ->update(['active'=>0]); 
+			
+			$r->session()->flash('error', 'ទិន្នន័យត្រូវបានលុប!');
+			return redirect('/loan/detail/'.$loan_id);
 		}
 		
 		public function print($id){

@@ -88,5 +88,28 @@ class PhoneshopController extends Controller
         $r->session()->flash('success', 'ទិន្នន័យត្រូវបានលុប!');
         return redirect('phoneshop');
     }
+	
+	// add customer ajax 
+    public function add_shop(Request $r){
+        if(!Right::check('phone_shop', 'i')){
+            return view('permissions.no');
+        }
+        $validate = $r->validate([
+            'name' => 'required|min:2|max:100'
+        ]);
+        
+        $data = array(
+            'name' => $r->name,
+            'phone' => $r->phone,
+            'address' => $r->address,
+            'create_at' => date('Y-m-d H:i:s')
+        );
+        
+        
+        $i = DB::table('phone_shops')->insertGetId($data);
+        
+        echo '<option value="'.$i.'" selected>'.$r->name.'</option>';
+
+    }
 
 }

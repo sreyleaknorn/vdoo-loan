@@ -131,6 +131,13 @@
                    
                     <div class="row">
                         <div class="col-sm-6" style="width: 50%; float: left;">
+							<div class="form-group row">
+                                <label for="customer_id" class="col-sm-4 form-control-label">លេខសំគាល់ </label>
+                                <div class="col-sm-7">
+                                    : <strong>L{{sprintf("%04s",$loan->id)}}</strong>
+                                </div>
+                            </div>
+							<div style="clear: both;"></div>
                             <div class="form-group row">
                                 <label for="customer_id" class="col-sm-4 form-control-label">ឈ្មោះអតិថិជន </label>
                                 <div class="col-sm-8">
@@ -230,7 +237,7 @@
                             <thead class="flip-header">
                                 <tr>
                                     <th>ល រ</th>
-                                    <th>ថ្ងៃបង់ប្រាក់</th>
+                                    <th>ថ្ងៃត្រូវបង់</th>
                                     <th>ប្រាក់ដើម</th>
                                     <th>ការប្រាក់</th>
                                     <th>ចំនួនសរុប</th>

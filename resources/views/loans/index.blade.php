@@ -16,6 +16,7 @@
             <thead class="flip-header">
                 <tr>
                     <th>#</th>
+                    <th>លេខសំគាល់</th>
                     <th>អតិថិជន</th>
                     <th>ហាងទូរស័ព្ទ</th>
                     <th>ម៉ូដែលទូរស័ព្ទ</th>
@@ -37,6 +38,8 @@
                 @foreach($loans as $loan)
                     <tr>
                         <td>{{$i++}}</td>
+                        <td>
+                            <a href="{{url('loan/detail/'.$loan->id)}}"><span class="text-teal"><strong>L{{sprintf("%04s",$loan->id)}}</strong></span></a>   </td>
                         <td><a href="{{url('loan/detail/'.$loan->id)}}">{{$loan->name}}</a></td>
                         <td>{{$loan->model_name}}</td>
                         <td>{{$loan->shop_name}}</td>
@@ -47,12 +50,10 @@
                         <td>${{number_format($loan->due_amount,3)}}</td>
                         <td class="action">
                             <a href="{{url('loan/delete?id='.$loan->id)}}" title="Delete" class='text-danger'
-                             onclick="return confirm('You want to delete?')">
+                             onclick="return confirm('អ្នកពិតជាចង់លុបទិន្នន័យ?')">
                                 <i class="fa fa-trash"></i>
                             </a>&nbsp;
-                            <a href="{{url('loan/edit/'.$loan->id)}}" class="text-success" title="Edit">
-                                <i class="fa fa-edit"></i>
-                            </a>
+                            
                         </td>
                     </tr>
                 @endforeach
@@ -71,7 +72,7 @@
 			$("#sidebar-menu li ul li").removeClass("active");
 			
             $("#menu_loan").addClass("active open");
-			$("#config_collapse").addClass("collapse in");
+			$("#loan_collapse").addClass("collapse in");
             $("#menu_all_loan").addClass("active");
         });
 	

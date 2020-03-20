@@ -73,7 +73,7 @@
 			$("#sidebar-menu li ul li").removeClass("active");
 			
             $("#menu_loan").addClass("active open");
-			$("#config_collapse").addClass("collapse in");
+			$("#loan_collapse").addClass("collapse in");
             $("#menu_all_loan").addClass("active");
         });
 	

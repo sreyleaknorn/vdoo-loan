@@ -3,13 +3,20 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>User Login | Vdoo ERP</title>
+        <title> User Login | Vdoo ERP</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
        
         <link rel="stylesheet" href="{{asset('css/vendor.css')}}">
         <link rel="stylesheet" href="{{asset('css/app.css')}}">
-        
+        <link href="https://fonts.googleapis.com/css?family=Battambang&display=swap" rel="stylesheet">
+		<style>
+
+            body {
+               font-family: Battambang , Arial, Helvetica, sans-serif;
+            }
+              
+		</style>
     </head>
     <body>
     <div class="auth">
@@ -35,18 +42,18 @@
                         <form method="POST" action="{{ route('login') }}" autocomplete="off">
                             @csrf
                             <div class="form-group">
-                                <label for="username">Username</label>
+                                <label for="username">ឈ្មោះគណនី</label>
                                 <input type="text" class="form-control underlined" name="username" 
                                     autofocus id="username" required>
                             </div>
                             <div class="form-group">
-                                <label for="password">Password</label>
+                                <label for="password">លេខសម្ងាត់</label>
                                 <input type="password" class="form-control underlined" name="password" id="password" required>
                             </div>
                             <p>&nbsp;</p>
                             
                             <div class="form-group">
-                                <button type="submit" class="btn btn-block btn-primary">Login</button>
+                                <button type="submit" class="btn btn-block btn-primary">ចូលក្នុងប្រព័ន្ធ</button>
                             </div>
                             
                         </form>

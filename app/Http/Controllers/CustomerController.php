@@ -90,6 +90,25 @@ class CustomerController extends Controller
         return redirect('customer');
     }
 
+	// add customer ajax 
+    public function add_customer(Request $r){
+        if(!Right::check('customer', 'i')){
+            return view('permissions.no');
+        }
+        $validate = $r->validate([
+            'name' => 'required|min:2|max:100'
+        ]);
+        
+        $data = array(
+            'name' => $r->name,
+            'phone' => $r->phone,
+			'create_at' => date('Y-m-d H:i:s')
+        );
+        
+        $i = DB::table('customers')->insertGetId($data);
+        
+        echo '<option value="'.$i.'" selected>'.$r->name.'</option>';
 
+    }
        
 }

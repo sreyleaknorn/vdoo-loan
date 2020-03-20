@@ -84,38 +84,48 @@
 								<li id="menu_loan">
                                     <a href=""> ៤. រំលស់ <i class="fa arrow"></i>
                                     </a>
-                                    <ul class="sidebar-nav" id="config_collapse">
+                                    <ul class="sidebar-nav" id="loan_collapse">
                                         
                                         <li id="menu_all_loan">
                                             <a href="{{url('/loan')}}">
 													៤.១. រំលស់
                                             </a>
                                         </li>
+										<li id="menu_all_loanschedule">
+                                            <a href="{{url('/loanschedule')}}">
+													៤.២. តារាងប្រាក់ត្រូវបង់
+                                            </a>
+                                        </li>
+										<li id="menu_all_loanpayment">
+                                            <a href="{{url('/loanpayment')}}">
+													៤.២. តារាងប្រាក់បានបង់
+                                            </a>
+                                        </li>
                                     </ul>
                                 </li>
 								<li id="menu_config">
                                     <a href="">
-                                        8. Settings <i class="fa arrow"></i>
+                                        ​៥. ​កំណត់ <i class="fa arrow"></i>
                                     </a>
                                     <ul class="sidebar-nav" id="config_collapse">
                                         
                                         <li id="menu_company">
                                             <a href="{{url('company')}}">
-                                                8.4 Company
+                                                ​៥.១ ក្រុមហ៊ុន
                                             </a>
                                         </li>
                                     </ul>
                                 </li>
                                 <li  id="menu_security">
                                     <a href="">
-                                        9. Security <i class="fa arrow"></i>
+                                        ​៦. ​កំណត់សុវត្ថិភាព  <i class="fa arrow"></i>
 									</a>
                                     <ul class="sidebar-nav"  id="security_collapse">
                                         <li id='menu_user'>
-                                            <a href="{{url('user')}}">9.1 Users</a>
+                                            <a href="{{url('user')}}">៦.១ អ្នកប្រើប្រាស់</a>
                                         </li>
                                         <li id="role_id">
-                                            <a href="{{url('role')}}">9.2 Roles</a>
+                                            <a href="{{url('role')}}">៦.២ សិទ្ធប្រើប្រាស់</a>
 										</li>
 										
 									</ul>

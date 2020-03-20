@@ -43,6 +43,7 @@ Route::get('phoneshop/delete', 'PhoneshopController@delete');
 Route::get('phoneshop/edit/{id}', 'PhoneshopController@edit');
 Route::post('phoneshop/save', 'PhoneshopController@save');
 Route::post('phoneshop/update', 'PhoneshopController@update');	
+Route::post('phoneshop/add_shop', 'PhoneshopController@add_shop');
 	
 Route::get('customer', 'CustomerController@index');
 Route::get('customer/create', 'CustomerController@create');
@@ -50,6 +51,7 @@ Route::get('customer/delete', 'CustomerController@delete');
 Route::get('customer/edit/{id}', 'CustomerController@edit');
 Route::post('customer/save', 'CustomerController@save');
 Route::post('customer/update', 'CustomerController@update');
+Route::post('customer/add_customer', 'CustomerController@add_customer');
 
 // loan
 Route::get('loan', 'LoanController@index');
@@ -61,35 +63,12 @@ Route::get('loan/print/{id}', 'LoanController@print');
 Route::get('loan/pay/{id}', 'LoanController@pay');
 Route::get('loan/delete', 'LoanController@delete');
 Route::post('loan/save_payment', 'LoanController@save_payment');
+Route::get('loan/delete_payment', 'LoanController@delete_payment');
 
-    // stock in
-Route::get('in', 'StockinController@index');
-Route::get('in/create', 'StockinController@create');
-Route::get('in/search', 'StockinController@search');
-Route::get('in/detail/{id}', 'StockinController@detail');
-Route::get('in/delete/{id}', 'StockinController@delete');
-Route::get('in/master/{id}', 'StockinController@get_master');
-Route::get('in/print/{id}', 'StockinController@in_print');
-Route::post('in/save', 'StockinController@save');
-Route::post('in/save/master', 'StockinController@save_master');
-Route::post('in/item/save', 'StockinController@save_item');
-Route::get('in/product/{id}', 'StockinController@get_product');
-Route::get('in/detail/delete/{id}', 'StockinController@delete_detail');
-Route::post('in/product/save', 'ProductController@save_product');
-
-Route::get('out', 'StockoutController@index');
-Route::get('out/create', 'StockoutController@create');
-Route::get('out/search', 'StockoutController@search');
-Route::get('out/detail/{id}', 'StockoutController@detail');
-Route::get('out/delete/{id}', 'StockoutController@delete');
-Route::get('out/print/{id}', 'StockoutController@print');
-Route::get('out/approve/{id}', 'StockoutController@approve');
-Route::get('out/reject/{id}', 'StockoutController@reject');
-Route::post('out/save', 'StockoutController@save');
-Route::post('out/save/master', 'StockoutController@save_master');
-Route::post('out/item/save', 'StockoutController@save_item');
-Route::get('out/detail/delete/{id}', 'StockoutController@delete_detail');
-Route::post('out/product/save', 'ProductController@save_product');
+//// loan schedule
+Route::get('loanschedule', 'LoanScheduleController@index');
+//// loan schedule
+Route::get('loanpayment', 'LoanPaymentController@index');
 
 // report
 Route::get('report/onhand', 'ReportController@onhand');
