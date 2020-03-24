@@ -73,3 +73,6 @@ label{
 #bbx input, #bbx button{
     margin-top: 2px;
 }
+div.stat div.name{
+    padding: 4px 0;
+}

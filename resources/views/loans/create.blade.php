@@ -27,7 +27,7 @@
 							<select name="customer_id" id="customer_id" class="form-control chosen-select">
 								<option value="">-- ជ្រើសរើស --</option>
 								@foreach($customers as $customer)
-                                <option value="{{$customer->id}}">{{$customer->name}}</option>
+                                <option value="{{$customer->id}}">{{$customer->name}} - {{$customer->phone}}</option>
 								@endforeach
 							</select>
 						</div>
@@ -86,7 +86,8 @@
 					<div class="form-group row">
 						<label class="col-sm-3" >ការប្រាក់ (%)<span class="text-danger">*</span></label>
 						<div class="col-sm-8">
-							<input type="text" class="form-control inputnumber" id="loan_interest" min="0" max="100" name="loan_interest"  value="{{old('loan_interest')}}" required>
+							<input type="text" class="form-control inputnumber" id="loan_interest" min="0" max="100" name="loan_interest"
+							  value="4" required>
 						</div>
 					</div>
 					
