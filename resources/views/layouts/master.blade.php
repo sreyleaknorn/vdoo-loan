@@ -100,7 +100,22 @@
                                         </li>
 										<li id="menu_all_loanpayment">
                                             <a href="{{url('/loanpayment')}}">
-													៤.២. តារាងប្រាក់បានបង់
+													៤.៣. តារាងប្រាក់បានបង់
+                                            </a>
+                                        </li>
+										<li id="menu_all_paytoday">
+                                            <a href="{{url('loanschedule/today')}}">
+													៤.៤. តារាងត្រូវបង់ថ្ងៃនេះ
+                                            </a>
+                                        </li>
+										<li id="menu_schedule_late">
+                                            <a href="{{url('loanschedule/late')}}">
+													៤.៥. តារាងហួសថ្ងៃបង់
+                                            </a>
+                                        </li>
+										<li id="menu_loan_stop">
+                                            <a href="{{url('loan/stopped')}}">
+													៤.៦.​ រំលស់ឈប់បង់ 
                                             </a>
                                         </li>
                                     </ul>

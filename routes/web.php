@@ -64,11 +64,16 @@ Route::get('loan/pay/{id}', 'LoanController@pay');
 Route::get('loan/delete', 'LoanController@delete');
 Route::post('loan/save_payment', 'LoanController@save_payment');
 Route::get('loan/delete_payment', 'LoanController@delete_payment');
+Route::post('loan/save_stopped', 'LoanController@save_stopped');
+Route::get('loan/stopped', 'LoanController@stopped');
 
 //// loan schedule
 Route::get('loanschedule', 'LoanScheduleController@index');
+Route::get('loanschedule/today', 'LoanScheduleController@today');
+Route::get('loanschedule/late', 'LoanScheduleController@late');
 //// loan schedule
 Route::get('loanpayment', 'LoanPaymentController@index');
+Route::get('loanpayment/print/{id}', 'LoanPaymentController@print');
 
 // report
 Route::get('report/onhand', 'ReportController@onhand');

@@ -27,4 +27,22 @@ class LoanPaymentController extends Controller
 			->paginate(config('app.row'));
             return view('loanpayments.index', $data);
 		}
+		
+		public function print($id) {
+			if(!Right::check('loanpayment', 'l')){
+				return view('permissions.no');
+			}
+			$data['loanpayment'] = DB::table('loanpayments')
+			->join('loans', 'loans.id', '=', 'loanpayments.loan_id')
+			->join('customers', 'customers.id', '=', 'loans.customer_id')
+			->join('phone_shops', 'phone_shops.id', '=', 'loans.shop_id')
+			->select('loanpayments.*', 'customers.name', 'customers.phone' , 'phone_shops.name as shop_name' )
+			->where([['loanpayments.id' , $id]])
+			->first();
+			$data['com'] = DB::table('companies')
+            ->where('id', 1)
+            ->first();
+			
+            return view('loanpayments.print', $data);
+		}
 }

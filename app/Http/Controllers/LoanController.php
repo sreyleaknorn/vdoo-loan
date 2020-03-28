@@ -120,14 +120,27 @@
 			$data['loanpayments'] = DB::table('loanpayments')
 			->where([['active',1], ['loan_id' , $id]])
 			->get();
+			$data['stop_payments'] = DB::table('stop_payments')
+			->where([['active',1], ['loan_id' , $id]])
+			->get();
+			
 			return view('loans.detail', $data);
 			
 		}
 		
 		public function pay($id){
-			if(!Right::check('loan', 'l')){
+			if(!Right::check('loanpayment', 'i')){
 				return view('permissions.no');
 			}
+			$payment = '';
+			$loan_id = 0;
+			if(isset($_GET['payment']) && isset($_GET['loan_id'])){
+				$payment = 'all';
+				$loan_id = $_GET['loan_id'];
+			}
+			$data['loanschedules'] = DB::table('loanschedules')
+			->where([['active',1], ['loan_id' , $loan_id], ['ispaid' , 0] ])
+			->get();
 			
 			$data['schedules'] = DB::table('loanschedules')
 			->join('loans', 'loans.id', '=', 'loanschedules.loan_id')
@@ -139,7 +152,7 @@
 		}
 		
 		public function save_payment(Request $request){
-			if(!Right::check('loan', 'l')){
+			if(!Right::check('loanpayment', 'i')){
 				return view('permissions.no');
 			}
 			
@@ -153,72 +166,110 @@
 				$request->session()->flash('error', 'ចំនួនទឹកប្រាក់ដែលទទួលបានត្រូវតែធំជាង ០ !');
 				return redirect('/loan/detail/'.$request->loan_id);
 			}
-			/// add to loanpayments table
-			$data_payment = array(
-			'customer_id' => $request->customer_id,
-			'loan_id' => $request->loan_id,
-			'loanschedule_id' => $request->loanschedule_id,
-			'receive_amount' => $request->receive_amount,
-			'receive_date' => $request->receive_date,
-			'note' => $request->note,
-			);
-			DB::table('loanpayments')->insertGetId($data_payment);
-			
-			/// update schedule
-			$paid_amount = $request->paid_amount;
-			$new_paid_amount = $paid_amount + $request->receive_amount;
-			$due_amount = $request->due_amount;
-			$new_due_amount = $due_amount - $request->receive_amount;
-			if($new_due_amount > 0){
-				$ispaid = 0;
-				$paid_date = null;
-				}else {
-				$ispaid = 1;
+			/* payment by schedule */
+			if($request->all_payment == 0){
+				/// add to loanpayments table
+				$data_payment = array(
+				'customer_id' => $request->customer_id,
+				'loan_id' => $request->loan_id,
+				'loanschedule_id' => $request->loanschedule_id,
+				'receive_amount' => $request->receive_amount,
+				'receive_date' => $request->receive_date,
+				'note' => $request->note,
+				);
+				DB::table('loanpayments')->insertGetId($data_payment);
+				
+				/// update schedule
+				$paid_amount = $request->paid_amount;
+				$new_paid_amount = $paid_amount + $request->receive_amount;
+				$due_amount = $request->due_amount;
+				$new_due_amount = $due_amount - $request->receive_amount;
+				if($new_due_amount > 0){
+					$ispaid = 0;
+					$paid_date = null;
+					}else {
+					$ispaid = 1;
+					$paid_date = $request->receive_date;
+				}
+				$data_schedule = array(
+				'due_amount' => $new_due_amount,
+				'paid_amount' => $new_paid_amount,
+				'paid_date' => $paid_date,
+				'ispaid' => $ispaid
+				);
+				DB::table('loanschedules')
+				->where('id', $request->loanschedule_id)
+				->update($data_schedule);
+			}else {
+				/* payment all */
+				$receive_amount = $request->receive_amount;
 				$paid_date = $request->receive_date;
+				
+				$schedule_id_arr = $request->sch_id;
+				$due_amount_arr = $request->all_due_amount;
+				$num_sch = count($schedule_id_arr);
+				$new_sch_paid = $receive_amount / $num_sch;
+				$all_paid_amount = $request->all_paid_amount;
+				$i = 0;
+				
+				foreach($schedule_id_arr as $schedule_id){
+					$data_schedule = array(
+						'due_amount' => 0,
+						'paid_amount' => $all_paid_amount[$i] + $new_sch_paid ,
+						'paid_date' => $paid_date,
+						'ispaid' => 1
+					);
+					DB::table('loanschedules')
+					->where('id', $schedule_id)
+					->update($data_schedule);
+					
+					/// add to loanpayments table
+					$data_payment = array(
+					'customer_id' => $request->customer_id,
+					'loan_id' => $request->loan_id,
+					'loanschedule_id' => $schedule_id,
+					'receive_amount' => $new_sch_paid,
+					'receive_date' => $request->receive_date,
+					'note' => $request->note,
+					);
+					DB::table('loanpayments')->insertGetId($data_payment);
+					
+					
+					$i++;
+				}
+				
+			
 			}
-			$data_schedule = array(
-			'due_amount' => $new_due_amount,
-			'paid_amount' => $new_paid_amount,
-			'paid_date' => $paid_date,
-			'ispaid' => $ispaid
-			);
-			DB::table('loanschedules')
-            ->where('id', $request->loanschedule_id)
-            ->update($data_schedule);
-			
-			/// update loan
-			$loandata = DB::table('loans')
-			->where('id' , $request->loan_id)
-			->first();
-			
-			
-			$paid_amount = $loandata->paid_amount + $request->receive_amount;
-            $due_amount = $loandata->total_amount - $paid_amount;
-			if($due_amount <= 0 ||  $due_amount < 0.01){
+				/// update loan
+				$loandata = DB::table('loans')
+				->where('id' , $request->loan_id)
+				->first();
+				
+				$paid_amount = $loandata->paid_amount + $request->receive_amount;
+				$due_amount = 0;
+				
 				$status = 'paid';
 				$paid_date = $request->receive_date;
-				}else {
-				$status = 'paying';
-				$paid_date = null;
-			}
+				
+				$data_loan = array(
+				'due_amount' => $due_amount,
+				'paid_amount' => $paid_amount,
+				'paid_date' => $paid_date,
+				'status' => $status
+				);
+				
+				DB::table('loans')
+				->where('id', $request->loan_id)
+				->update($data_loan);
+				$request->session()->flash('success', 'ប្រាក់បានបង់ដោយជោគជ័យ !');
+				
 			
-			$data_loan = array(
-			'due_amount' => $due_amount,
-			'paid_amount' => $paid_amount,
-			'paid_date' => $paid_date,
-			'status' => $status
-			);
-			
-			DB::table('loans')
-            ->where('id', $request->loan_id)
-            ->update($data_loan);
-			$request->session()->flash('success', 'ប្រាក់បានបង់ដោយជោគជ័យ !');
 			return redirect('/loan/detail/'.$request->loan_id);
 		}
 		
 		public function delete_payment(Request $r)
 		{
-			if(!Right::check('loan', 'd')){
+			if(!Right::check('loanpayment', 'd')){
 				return view('permissions.no');
 			}
 			
@@ -308,6 +359,45 @@
             ->first();
 			return view('loans.print', $data);
 			
+		}
+		
+		public function save_stopped(){
+			if(!Right::check('loan', 'u')){
+				return view('permissions.no');
+			}
+			$loan_id = $r->loan_id;
+			$data = array(
+				'stop_date' => $r->stop_date,
+				'reason' => $r->reason,
+				'loan_id' => $r->loan_id,
+				'create_at' => date('Y-m-d H:i:s')
+			);
+			$i = DB::table('stop_payments')->insertGetId($data);
+			if($i){
+				$data_loan = array(
+					'status' => 'stopped'
+				);
+				
+				DB::table('loans')
+				->where('id', $loan_id)
+				->update($data_loan);
+			}
+			return redirect('/loan/detail/'.$loan_id);
+		}
+		
+		public function stopped(Request $r){
+			if(!Right::check('loan', 'l')){
+				return view('permissions.no');
+			}
+			$data['stop_payments'] = DB::table('stop_payments')
+			->join('loans', 'loans.id', '=', 'stop_payments.loan_id')
+			->join('customers', 'customers.id', '=', 'loans.customer_id')
+			->join('phone_shops', 'phone_shops.id', '=', 'loans.shop_id')
+			->select('stop_payments.*', 'customers.name', 'customers.phone' , 'phone_shops.name as shop_name' , 'loans.loan_amount as loan_amount' ,'loans.total_interest as total_interest' ,'loans.paid_amount as paid_amount' )
+			->where([['stop_payments.active', 1], ['loans.status' , 'stopped']])
+			->orderBy('stop_payments.id' , 'DESC')
+			->paginate(config('app.row'));
+			return view('loans.stop', $data);
 		}
 		
 		public function delete(Request $r)

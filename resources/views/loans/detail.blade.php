@@ -10,12 +10,20 @@
                 <p class="title">លម្អិត រំលស់
                     <a href="javascript:history.back();" class="btn btn-primary-outline btn-oval btn-sm mx-left"> 
                         <i class="fa fa-reply"></i> ត្រលប់ក្រោយ</a> 
-                    <a href="{{url('loan/print/'.$loan->id)}}" target="_blank" class="btn btn-warning-outline btn-oval btn-sm mx-left">
+                    <a href="{{url('loan/print/'.$loan->id)}}" target="_blank" class="btn btn-success-outline btn-oval btn-sm mx-left">
                         <i class="fa fa-print"></i> បោះពុម្ព
                     </a>
+					<?php 
+						if($loan->status == 'new' || $loan->status == 'paying'){
+					?>
+					<a href="{{url('loan/stopped?id='.$loan->id)}}" class="btn btn-warning-outline btn-oval btn-sm mx-left" type="button"  data-toggle="modal" data-target="#stopPayment" >
+                        <i class="fa fa-times-circle"></i>​ ឈប់បង់
+                    </a>
+						<?php } ?>
                     <a href="{{url('loan/delete?id='.$loan->id)}}" class="btn btn-danger-outline btn-oval btn-sm mx-left" onclick="return confirm('អ្នកពិតជាចង់លុបទិន្នន័យ?')">
                         <i class="fa fa-trash"></i> លុប
                     </a>
+					
                 </p>
             </div>
         </div>
@@ -25,8 +33,6 @@
                 @component('coms.alert')
 				@endcomponent
                 
-                <form action="#" method="POST" enctype="multipart/form-data">
-                    
                     <div class="row">
                         <div class="col-sm-6">
 							
@@ -84,6 +90,12 @@
                                     : {{$loan->start_interest_date}}
                                 </div>
                             </div>
+							<div class="form-group row">
+                                <label for="due_date" class="col-sm-5 form-control-label">កំណត់ចំណាំ</label>
+                                <div class="col-sm-7">
+                                    : {{$loan->note}}
+                                </div>
+                            </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group row">
@@ -135,9 +147,36 @@
                                 </div>
                             </div>
 							<div class="form-group row">
-                                <label for="due_date" class="col-sm-5 form-control-label">កំណត់ចំណាំ</label>
+                                <label for="due_date" class="col-sm-5 form-control-label">ថ្ងៃបង់បញ្ចប់</label>
                                 <div class="col-sm-7">
-                                    : {{$loan->note}}
+                                    : {{$loan->paid_date}}
+                                </div>
+                            </div>
+							<div class="form-group row">
+                                <label for="due_date" class="col-sm-5 form-control-label">ស្ថានភាព</label>
+                                <div class="col-sm-7">
+									<?php 
+									$status = $loan->status;
+									$color = '';
+									switch ($status) {
+										case "new":
+											$status = "ថ្មី";
+											$color = 'badge-primary';
+											break;
+										case "paying":
+											$status = "កំពុងបង់";
+											$color = 'badge-warning';
+											break;
+										case "paid":
+											$status = "បានបញ្ចប់";
+											$color = 'badge-success';
+											break;
+										default:
+											$color = 'badge-danger';
+											$status = "ឈប់បង់";
+									}
+									?>
+                                    : <span class="badge {{$color}}">{{$status}}</span>
                                 </div>
                             </div>
                         </div>
@@ -168,7 +207,7 @@
 									<th>សកម្មភាព</th>
                                 </tr>
                             </thead>
-                            <tbody id="data">
+                            <tbody >
 								<?php
 									$i = 1;
 								?>
@@ -219,6 +258,14 @@
                         </div>
                         
                     </div>
+					
+					@if(count($loanpayments) < 1)
+						<div class="alert alert-warning">
+						   មិនទាន់មានការបង់ប្រាក់ទេ។
+						</div>
+
+					@endif
+					@if(count($loanpayments) > 0)
                     <div class="table-flip-scroll">
 
                         <table class="table table-striped table-sm table-bordered table-hover flip-content">
@@ -230,7 +277,7 @@
 									<th>សកម្មភាព</th>
                                 </tr>
                             </thead>
-                            <tbody id="data">
+                            <tbody >
 								<?php
 									$i = 1;
 								?>
@@ -240,6 +287,9 @@
 										<td>${{number_format($pm->receive_amount,3)}}</td>
 										<td>{{$pm->receive_date}}</td>
 										<td>
+											<a  target="_new" href="{{url('loanpayment/print/'.$pm->loan_id)}}" title="Print" class="btn btn-success-outline btn-oval btn-sm mx-left" >
+												<i class="fa fa-print"></i> 
+											</a>
 											<a href="{{url('loan/delete_payment?id='.$pm->id)}}" class="btn btn-danger-outline btn-oval btn-sm mx-left" onclick="return confirm('អ្នកពិតជាចង់លុបទិន្នន័យ?')">
 											<i class="fa fa-trash"></i> លុប
 											</a>
@@ -251,13 +301,90 @@
                         </table>
 
                     </div>
+					@endif
 					
-                </form>
-				
-                
+					@if(count($stop_payments) > 0)
+					<p>&nbsp;</p>
+                    <div class="row">
+
+                        <div class="col-sm-6">
+                            
+                            <h5 class="text-danger">ឈប់បង់ប្រាក់</h5>
+                        </div>
+                        
+                    </div>
+                    <div class="table-flip-scroll">
+
+                        <table class="table table-striped table-sm table-bordered table-hover flip-content">
+                            
+                            <tbody >
+								<?php
+									$i = 1;
+								?>
+                                @foreach($stop_payments as $spm)
+									<tr>
+										<td><strong>ថ្ងៃឈប់</strong></td>
+										<td>{{$spm->stop_date}}</td>
+									</tr>
+									<tr>
+										<td><strong>មូលហេតុ</strong></td>
+										<td>{{$spm->reason}}</td>
+									</tr>
+								@endforeach
+                                
+                            </tbody>
+                        </table>
+
+                    </div>
+					@endif
             </div>
         </div>
     </div>
+	
+	
+	<!--- modal add shop -->
+<div class="modal fade" id="stopPayment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<form action="{{url('loan/save_stopped')}}" method="POST" enctype="multipart/form-data">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">ឈប់បង់ប្រាក់</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				
+					{{csrf_field()}}
+					<input type="hidden" name="loan_id" value="{{$loan->id}}"/>
+					<div class="form-group row">
+						<label for="stop_date" class="col-sm-3">ថ្ងៃឈប់<span class="text-danger">*</span> </label>
+						<div class="col-sm-9">
+							<input type="date" name='stop_date' id="stop_date" 
+							class='form-control' value="{{date('Y-m-d')}}" required>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="reason" class="col-sm-3">មូលហេតុ </label>
+						<div class="col-sm-9">
+							<textarea class="form-control" id="reason" name="reason">{{old('reason')}}</textarea>
+						</div>
+					</div>
+					
+				
+			</div>
+			
+			<div class="modal-footer">
+                <div style='padding: 5px'>
+                    <button type="submit" class="btn btn-primary" id="add_shop">រក្សាទុក</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"  id="btnclose_modal_shop">ចាកចេញ</button>
+				</div>
+			</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!---.../ modal stopPayment -->
                   
 @endsection
 

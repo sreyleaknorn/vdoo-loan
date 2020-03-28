@@ -46,6 +46,10 @@
 							<td>${{number_format($pm->receive_amount,3)}}</td>
 							<td>{{$pm->receive_date}}</td>
 							<td>
+								
+								<a  target="_new" href="{{url('loanpayment/print/'.$pm->loan_id)}}" title="Print" class="btn btn-success-outline btn-oval btn-sm mx-left" >
+									<i class="fa fa-print"></i> 
+								</a>
 								<a href="{{url('loan/delete_payment?id='.$pm->id)}}" class="btn btn-danger-outline btn-oval btn-sm mx-left" onclick="return confirm('អ្នកពិតជាចង់លុបទិន្នន័យ?')">
 									<i class="fa fa-trash"></i> លុប
 								</a>
@@ -56,6 +60,7 @@
 				</table>
 			</div>
 		</div>
+		<p>&nbsp;</p>
 		{{$loanpayments->links()}}
 		
 		

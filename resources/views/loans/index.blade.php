@@ -22,12 +22,13 @@
 							<th>លេខសំគាល់</th>
 							<th>អតិថិជន</th>
 							<th>ហាងទូរស័ព្ទ</th>
-							<th>ម៉ូដែលទូរស័ព្ទ</th>
+							<th>ឈ្មោះទូរស័ព្ទ</th>
 							<th>ចំនួនខ្ចី</th>
 							<th>ការប្រាក់</th>
 							<th>សរុប</th>
 							<th>បានបង់</th>
 							<th>នៅខ្វះ</th>
+							<th>ស្ថានភាព</th>
 							<th>សកម្មភាព</th>
 						</tr>
 					</thead>
@@ -40,6 +41,28 @@
 						?>
 						@foreach($loans as $loan)
 						<tr>
+							<?php 
+									$status = $loan->status;
+									$color = '';
+									switch ($status) {
+										case "new":
+											$status = "ថ្មី";
+											$color = 'badge-primary';
+											break;
+										case "paying":
+											$status = "កំពុងបង់";
+											$color = 'badge-warning';
+											break;
+										case "paid":
+											$status = "បានបញ្ចប់";
+											$color = 'badge-success';
+											break;
+										default:
+											$color = 'badge-danger';
+											$status = "ឈប់បង់";
+									}
+									?>
+								
 							<td>{{$i++}}</td>
 							<td>
 							<a href="{{url('loan/detail/'.$loan->id)}}"><span class="text-teal"><strong>L{{sprintf("%04s",$loan->id)}}</strong></span></a>   </td>
@@ -51,7 +74,12 @@
 							<td>${{number_format($loan->total_amount,3)}}</td>
 							<td>${{number_format($loan->paid_amount,3)}}</td>
 							<td>${{number_format($loan->due_amount,3)}}</td>
+							<td><span class="badge {{$color}}">{{$status}}</span></td>
 							<td class="action">
+								<a target="_new" href="{{url('loan/print/'.$loan->id)}}" title="Print" class='text-success'
+								>
+									<i class="fa fa-print"></i>
+								</a>&nbsp;
 								<a href="{{url('loan/delete?id='.$loan->id)}}" title="Delete" class='text-danger'
 								onclick="return confirm('អ្នកពិតជាចង់លុបទិន្នន័យ?')">
 									<i class="fa fa-trash"></i>

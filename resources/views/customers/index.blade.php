@@ -55,6 +55,7 @@
 				</table>
 			</div>
 		</div>
+		<p>&nbsp;</p>
 		{{$customers->links()}}
 		
 		

@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('header')
-<strong>តារាងប្រាក់ត្រូវបង់</strong>
+<strong>តារាងហួសថ្ងៃបង់</strong>
 @endsection
 @section('content')
 <div class="card card-gray">
@@ -13,7 +13,13 @@
 		
 		@component('coms.alert')
 		@endcomponent
-		
+		@if(count($loanschedules) < 1)
+						<div class="alert alert-warning">
+						   មិនមានតារាងត្រូវបង់ហួសកាលកំណត់ទេ!
+						</div>
+
+		@endif
+					
 		<div class="table-flip-scroll">
 			<div class="table-responsive">
 				<table class="table table-sm table-striped table-bordered table-hover flip-content">
@@ -95,7 +101,7 @@
 		
 		$("#menu_loan").addClass("active open");
 		$("#loan_collapse").addClass("collapse in");
-		$("#menu_all_loanschedule").addClass("active");
+		$("#menu_schedule_late").addClass("active");
 	});
 	
 	</script>

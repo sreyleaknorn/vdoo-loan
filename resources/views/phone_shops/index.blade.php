@@ -57,6 +57,7 @@
 				</table>
 			</div>
 		</div>
+		<p>&nbsp;</p>
 		{{$phone_shops->links()}}
 		
 		
