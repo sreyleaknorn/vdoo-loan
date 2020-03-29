@@ -80,28 +80,5 @@ Route::get('loanpayment', 'LoanPaymentController@index');
 Route::get('loanpayment/print/{id}', 'LoanPaymentController@print');
 
 // report
-Route::get('report/onhand', 'ReportController@onhand');
-Route::get('report/onhand/print', 'ReportController@onhand_print');
-Route::get('report/sale', 'ReportController@sale');
-Route::get('report/sale/search', 'ReportController@search_sale');
-Route::get('report/sale/print', 'ReportController@print_sale');
-Route::get('report/sale/summary', 'ReportController@sale_summary');
-Route::get('report/sale/summary/search', 'ReportController@search_sale_summary');
-Route::get('report/sale/summary/print', 'ReportController@print_sale_summary');
-Route::get('report/in', 'ReportController@in');
-Route::get('report/in/search', 'ReportController@search_in');
-Route::get('report/in/print', 'ReportController@print_in');
-Route::get('report/in/summary', 'ReportController@in_summary');
-Route::get('report/in/summary/search', 'ReportController@search_in_summary');
-Route::get('report/in/summary/print', 'ReportController@print_in_summary');
 
-Route::get('report/out', 'ReportController@out');
-Route::get('report/out/search', 'ReportController@search_out');
-Route::get('report/out/print', 'ReportController@print_out');
-Route::get('report/out/summary', 'ReportController@out_summary');
-Route::get('report/out/summary/search', 'ReportController@search_out_summary');
-Route::get('report/out/summary/print', 'ReportController@print_out_summary');
 
-Route::get('report/customer', 'ReportController@customer');
-Route::get('report/customer/search', 'ReportController@search_customer');
-Route::get('report/customer/print', 'ReportController@print_customer');

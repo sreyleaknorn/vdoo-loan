@@ -121,24 +121,33 @@
             <div class="card-block">
                 <div class="title-block">
                     <h4 class="title text-success">
-                        <a href="{{url('invoice')}}" class="text-success">Due Invoices</a>
+                        <a href="{{url('invoice')}}" class="text-success">អតិថិជនត្រូវបង់ថ្ងៃនេះ</a>
                     </h4>
                 </div>
                 <div class="row row-sm stats-container">
                     <table class="table table-sm mytbl">
                         <thead>
                             <tr>
-                                <th>Invoice#</th>
-                                <th>Customer</th>
-                                <th>Due Date</th>
-                                <th>Due Amount</th>
+                                <th>កូដ</th>
+                                <th>អតិថិជន</th>
+                                <th>ហាង</th>
+                                <th>ត្រូវបង់</th>
                             </tr>
                         </thead>
                         <tbody>
-                           
+                            @foreach($loans as $n)
+                                <tr>
+                                    <td>
+                                        <a href="{{url('loan/detail/'.$n->loan_id)}}">L000{{$n->loan_id}}</a>
+                                    </td>
+                                    <td>{{$n->name}} - {{$n->phone}}</td>
+                                    <td>{{$n->shop_name}}</td>
+                                    <td>$ {{$n->total_amount}}</td>
+                                   
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
-                    <a href="#" class='text-sm text-success'>View All >></a>
                 </div>
             </div>
         </div>

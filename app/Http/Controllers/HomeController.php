@@ -46,6 +46,16 @@ class HomeController extends Controller
         $data['shops'] = DB::table('phone_shops')
             ->where('active', 1)
             ->get();
+        $data['loans'] = DB::table('loanschedules')
+            ->join('loans', 'loans.id', '=', 'loanschedules.loan_id')
+            ->join('customers', 'customers.id', '=', 'loans.customer_id')
+            ->join('phone_shops', 'phone_shops.id', '=', 'loans.shop_id')
+            ->where('loanschedules.active', 1)
+            ->where('loanschedules.pay_date', date('Y-m-d'))
+            ->where('loanschedules.due_amount','>', 0)
+            ->select('loanschedules.*', 'customers.name', 'customers.phone' , 'phone_shops.name as shop_name' )
+            ->orderBy('loanschedules.pay_date' , 'ASC')
+            ->paginate(config('app.row'));
         return view('dashboard', $data);
     }
 
