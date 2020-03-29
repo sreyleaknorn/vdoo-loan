@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('header')
-    <strong>Dashboard</strong>
+    <strong>ទំព័រមុខ</strong>
 @endsection
 @section('css')
     <style>
@@ -13,6 +13,43 @@
     </style>
 @endsection
 @section('content')
+<div class="row sameheight-container">
+    <div class="col col-12 col-sm-12 col-md-12 col-xl-12 stats-col">
+        <div class="card sameheight-item stats" data-exclude="xs" style="height: 322.6px;">
+            <div class="card-block">
+                <div class="title-block">
+                    <h4 class="title text-success"> 
+                        <span class="text-danger">ស្វែងរកអតិថិជន ត្រូវបង់ប្រាក់</span>
+                    </h4>
+                </div>
+                <hr>
+                <div class="row row-sm stats-container">
+                    <div class="col-sm-12">
+                        <form action="{{url('search-all')}}">
+                            ហាងទូរស័ព្ទ: <select name="shop" id="shop" style="padding: 5px 2px;font-size:12px">
+                                <option value="all">-- ទាំងអស់ --</option>
+                                @foreach($shops as $s)
+                                    <option value="{{$s->id}}">{{$s->name}} - {{$s->phone}}</option>
+                                @endforeach
+                            </select>
+                            ចាប់ពី: 
+                            <input type="date" name='start' value="{{date('Y-m-d')}}" required> 
+                            ដល់: 
+                            <input type="date" name='end' value="{{date('Y-m-d')}}" required>
+                            <button><i class="fa fa-search"></i> ស្វែងរក</button>
+                        </form>
+                        <p></p>
+                        <form action="{{url('search')}}">
+                            អតិថិជន: <input type="text" name='q' placeholder="ឈ្មោះ ឬលេខទូរស័ព្ទ">
+                            <button><i class="fa fa-search"></i> ស្វែងរក</button>
+                        </form>
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="row sameheight-container">
     <div class="col col-12 col-sm-12 col-md-5 col-xl-5 stats-col">
         <div class="card sameheight-item stats" data-exclude="xs" style="height: 322.6px;">
