@@ -166,13 +166,7 @@
                                 </div>
                             </div>
 							<div style="clear: both;"></div>
-							<div class="form-group row">
-                                <label for="invoice_date" class="col-sm-4 form-control-label">ថ្ងៃបញ្ចេញប្រាក់</label>
-                                <div class="col-sm-8">
-                                    : {{$loan->release_date}}
-                                </div>
-                            </div>
-							<div style="clear: both;"></div>
+							
 							<div class="form-group row">
                                 <label for="invoice_date" class="col-sm-4 form-control-label">ចាប់ផ្ដើមការប្រាក់</label>
                                 <div class="col-sm-8">

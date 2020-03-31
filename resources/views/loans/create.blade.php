@@ -112,13 +112,7 @@
 							class='form-control' value="{{date('Y-m-d')}}" required>
 						</div>
 					</div>
-					<div class="form-group row">
-                        <label class="col-sm-3">ថ្ងៃបញ្ចេញប្រាក់ *</label>
-                        <div class="col-sm-8">
-                            <input type="date" name='release_date' id="release_date" 
-							class='form-control' value="{{date('Y-m-d')}}" required>
-						</div>
-					</div>
+					
 					<div class="form-group row">
                         <label class="col-sm-3">ចាប់ផ្ដើមការប្រាក់ *</label>
                         <div class="col-sm-8">

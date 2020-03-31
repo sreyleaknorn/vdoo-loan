@@ -23,8 +23,8 @@
             font-family: khos;
         }
         .box{
-            width: 700px;
-            height: 630px;
+            width: 600px;
+            height: 430px;
             border: 0px solid #ccc;
             margin: 0 auto;
             padding: 15px;

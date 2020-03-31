@@ -78,12 +78,7 @@
                                     : {{$loan->loan_date}}
                                 </div>
                             </div>
-							<div class="form-group row">
-                                <label for="invoice_date" class="col-sm-5 form-control-label">ថ្ងៃបញ្ចេញប្រាក់</label>
-                                <div class="col-sm-7">
-                                    : {{$loan->release_date}}
-                                </div>
-                            </div>
+							
 							<div class="form-group row">
                                 <label for="invoice_date" class="col-sm-5 form-control-label">ថ្ងៃចាប់ផ្ដើមការប្រាក់</label>
                                 <div class="col-sm-7">
@@ -274,6 +269,7 @@
                                     <th>ល រ</th>
                                     <th>ប្រាក់ទទួលបាន</th>
                                     <th>ថ្ងៃទទួលប្រាក់</th>
+                                    <th>កំណត់ចំណាំ</th>
 									<th>សកម្មភាព</th>
                                 </tr>
                             </thead>
@@ -286,6 +282,7 @@
 										<td>{{$i++}}</td>
 										<td>${{number_format($pm->receive_amount,3)}}</td>
 										<td>{{$pm->receive_date}}</td>
+										<td>{{$pm->note}}</td>
 										<td>
 											<a  target="_new" href="{{url('loanpayment/print/'.$pm->loan_id)}}" title="Print" class="btn btn-success-outline btn-oval btn-sm mx-left" >
 												<i class="fa fa-print"></i> 

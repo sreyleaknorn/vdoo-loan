@@ -200,6 +200,32 @@
 				DB::table('loanschedules')
 				->where('id', $request->loanschedule_id)
 				->update($data_schedule);
+				
+				/// update loan
+				$loandata = DB::table('loans')
+				->where('id' , $request->loan_id)
+				->first();
+				
+				$paid_amount = $loandata->paid_amount + $request->receive_amount;
+				$due_amount = $loandata->total_amount - $paid_amount;
+				
+				if($due_amount <= 0 || $due_amount < 0.01){
+					$status = 'paid';
+					$paid_date = $request->receive_date;
+				}else {
+					
+					$status = 'paying';
+					$paid_date = null;
+				}
+				
+				
+				$data_loan = array(
+				'due_amount' => $due_amount,
+				'paid_amount' => $paid_amount,
+				'paid_date' => $paid_date,
+				'status' => $status
+				);
+				
 			}else {
 				/* payment all */
 				$receive_amount = $request->receive_amount;
@@ -212,34 +238,71 @@
 				$all_paid_amount = $request->all_paid_amount;
 				$i = 0;
 				
+				$receive_amount_new = $receive_amount;
 				foreach($schedule_id_arr as $schedule_id){
-					$data_schedule = array(
-						'due_amount' => 0,
-						'paid_amount' => $all_paid_amount[$i] + $new_sch_paid ,
-						'paid_date' => $paid_date,
-						'ispaid' => 1
-					);
-					DB::table('loanschedules')
-					->where('id', $schedule_id)
-					->update($data_schedule);
-					
-					/// add to loanpayments table
-					$data_payment = array(
-					'customer_id' => $request->customer_id,
-					'loan_id' => $request->loan_id,
-					'loanschedule_id' => $schedule_id,
-					'receive_amount' => $new_sch_paid,
-					'receive_date' => $request->receive_date,
-					'note' => $request->note,
-					);
-					DB::table('loanpayments')->insertGetId($data_payment);
-					
+					if(($receive_amount_new - $due_amount_arr[$i]) > 0 ){
+						$receive_amount_new = $receive_amount_new - $due_amount_arr[$i];
+						$data_schedule = array(
+							'due_amount' => 0,
+							'paid_amount' => $all_paid_amount[$i] + $due_amount_arr[$i] ,
+							'paid_date' => $paid_date,
+							'ispaid' => 1
+						);
+						DB::table('loanschedules')
+						->where('id', $schedule_id)
+						->update($data_schedule);
+						
+						/// add to loanpayments table
+						$data_payment = array(
+						'customer_id' => $request->customer_id,
+						'loan_id' => $request->loan_id,
+						'loanschedule_id' => $schedule_id,
+						'receive_amount' => $due_amount_arr[$i],
+						'receive_date' => $request->receive_date,
+						'note' => $request->note,
+						);
+						DB::table('loanpayments')->insertGetId($data_payment);
+						
+					}else {
+						if($receive_amount_new > 0){
+							$data_schedule = array(
+								'due_amount' => 0,
+								'paid_amount' => $all_paid_amount[$i] + $receive_amount_new ,
+								'paid_date' => $paid_date,
+								'ispaid' => 1
+							);
+							DB::table('loanschedules')
+							->where('id', $schedule_id)
+							->update($data_schedule);
+							
+							
+							/// add to loanpayments table
+							$data_payment = array(
+							'customer_id' => $request->customer_id,
+							'loan_id' => $request->loan_id,
+							'loanschedule_id' => $schedule_id,
+							'receive_amount' => $receive_amount_new,
+							'receive_date' => $request->receive_date,
+							'note' => $request->note,
+							);
+							DB::table('loanpayments')->insertGetId($data_payment);
+							$receive_amount_new = 0;
+						}else {
+							$data_schedule = array(
+								'due_amount' => 0,
+								'paid_date' => $paid_date,
+								'ispaid' => 1
+							);
+							DB::table('loanschedules')
+							->where('id', $schedule_id)
+							->update($data_schedule);
+						}
+						
+					}
 					
 					$i++;
 				}
 				
-			
-			}
 				/// update loan
 				$loandata = DB::table('loans')
 				->where('id' , $request->loan_id)
@@ -257,6 +320,9 @@
 				'paid_date' => $paid_date,
 				'status' => $status
 				);
+				
+			
+			}
 				
 				DB::table('loans')
 				->where('id', $request->loan_id)
