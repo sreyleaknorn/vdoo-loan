@@ -19,6 +19,8 @@ Auth::routes();
 // search
 Route::get('search', 'HomeController@search');
 Route::get('search-all', 'HomeController@search_all');
+Route::get('payment/search', 'LoanPaymentController@search');
+
 
 Route::get('role', 'RoleController@index');
 Route::get('role/create', 'RoleController@create');
