@@ -153,7 +153,7 @@
 									</a>
                                     <ul class="sidebar-nav"  id="report_collapse">
                                         <li id='menu_report1'>
-                                            <a href="#">៧.១ របាយការណ៍បង់ប្រាក់</a>
+                                            <a href="{{url('report/payment')}}">៧.១ របាយការណ៍បង់ប្រាក់</a>
                                         </li>
                                         
 									</ul>
