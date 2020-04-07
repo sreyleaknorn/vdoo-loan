@@ -114,6 +114,7 @@ class HomeController extends Controller
         $data['loanschedules'] = $q->select('loanschedules.*', 'customers.name', 'customers.phone' , 'phone_shops.name as shop_name' )
             ->orderBy('loanschedules.pay_date' , 'ASC')
             ->paginate(config('app.row'));
+        
         $data['shops'] = DB::table('phone_shops')
             ->where('active', 1)
             ->get();
