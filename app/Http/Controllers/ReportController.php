@@ -14,6 +14,7 @@ class ReportController extends Controller
         $this->middleware('auth');
         
     }
+<<<<<<< HEAD
     public function payment()
     {
         if(!Right::check('payment_report', 'l')){
@@ -93,433 +94,124 @@ class ReportController extends Controller
         if(!Right::check('sale_report', 'l')){
             return view('permissions.no');
         }
+=======
+    
+    public function payment()
+    {
+        $data['sh'] = 'all';
+>>>>>>> 50fc076d8ff8003104d22169c02eb8114259f4e3
         $data['start'] = date('Y-m-d');
         $data['end'] = date('Y-m-d');
-        $data['products'] = DB::table('products')
+        $data['payments'] = [];
+        $data['shops'] = DB::table('phone_shops')
             ->where('active', 1)
             ->get();
-        $data['sales'] = [];
-        $data['pid'] = 'all';
-        return view('reports.report2', $data);
+        return view('reports.payment', $data);
     }
-    public function search_sale(Request $r)
+    public function search_payment(Request $r)
     {
-        if(!Right::check('sale_report', 'l')){
-            return view('permissions.no');
-        }
+        $data['sh'] = $r->shop;
         $data['start'] = $r->start;
         $data['end'] = $r->end;
-        $data['pid'] = $r->product;
-
-        $data['products'] = DB::table('products')
+        
+        $data['shops'] = DB::table('phone_shops')
             ->where('active', 1)
             ->get();
-        $sales = DB::table('invoice_details')            
-            ->join('invoices', 'invoice_details.invoice_id', 'invoices.id')
-            ->join('products', 'invoice_details.product_id', 'products.id')
-            ->join('customers', 'invoices.customer_id', 'customers.id')
-            ->leftJoin('units', 'products.unit_id', 'units.id')
-            ->where('invoices.invoice_date','>=', $r->start)
-            ->where('invoices.invoice_date', '<=', $r->end);
-        if($r->product!='all')    
+        $q =  DB::table('loanschedules')
+            ->join('loans', 'loans.id', '=', 'loanschedules.loan_id')
+            ->join('customers', 'customers.id', '=', 'loans.customer_id')
+            ->join('phone_shops', 'phone_shops.id', '=', 'loans.shop_id')
+            ->where('loanschedules.active', 1)
+            ->where('loanschedules.pay_date', '>=', $r->start)
+            ->where('loanschedules.pay_date', '<=', $r->end)
+            ->where('loanschedules.due_amount','<=', 0);
+        if($r->shop!='all')
         {
-            $sales = $sales->where('invoice_details.product_id', $r->product);
+            $q = $q->where('loans.shop_id', $r->shop);
         }
-        $sales = $sales->orderBy('invoice_details.id')
-            ->select('invoices.invoice_date', 'invoices.id as inv_no', 'products.name', 'products.kh_name', 
-                'invoices.reference', 'units.name as uname', 'invoice_details.*', 'customers.company_name')
+        $data['payments']  =  $q->select('loanschedules.*', 'customers.name', 'customers.phone' , 'phone_shops.name as shop_name' )
+            ->orderBy('loanschedules.pay_date' , 'ASC')
             ->get();
-        $data['sales'] = $sales;
-        return view('reports.report2', $data);
+        return view('reports.payment', $data);
     }
-    public function print_sale(Request $r)
+    public function print_payment(Request $r)
     {
-        if(!Right::check('sale_report', 'l')){
-            return view('permissions.no');
-        }
-        $data['com'] = DB::table('companies')->find(1);
+       
         $data['start'] = $r->start;
         $data['end'] = $r->end;
-        $sales = DB::table('invoice_details')            
-            ->join('invoices', 'invoice_details.invoice_id', 'invoices.id')
-            ->join('products', 'invoice_details.product_id', 'products.id')
-            ->join('customers', 'invoices.customer_id', 'customers.id')
-            ->leftJoin('units', 'products.unit_id', 'units.id')
-            ->where('invoices.invoice_date','>=', $r->start)
-            ->where('invoices.invoice_date', '<=', $r->end);
-        if($r->pid!='all')    
+        $q =  DB::table('loanschedules')
+            ->join('loans', 'loans.id', '=', 'loanschedules.loan_id')
+            ->join('customers', 'customers.id', '=', 'loans.customer_id')
+            ->join('phone_shops', 'phone_shops.id', '=', 'loans.shop_id')
+            ->where('loanschedules.active', 1)
+            ->where('loanschedules.pay_date', '>=', $r->start)
+            ->where('loanschedules.pay_date', '<=', $r->end)
+            ->where('loanschedules.due_amount','<=', 0);
+        if($r->sid!='all')
         {
-            $sales = $sales->where('invoice_details.product_id', $r->pid);
+            $q = $q->where('loans.shop_id', $r->sid);
         }
-        $sales = $sales->orderBy('invoice_details.id')
-            ->select('invoices.invoice_date', 'invoices.id as inv_no', 'products.name', 'products.kh_name', 
-                'invoices.reference', 'units.name as uname', 'invoice_details.*','customers.company_name')
+        $data['payments']  =  $q->select('loanschedules.*', 'customers.name', 'customers.phone' , 'phone_shops.name as shop_name' )
+            ->orderBy('loanschedules.pay_date' , 'ASC')
             ->get();
-        $data['sales'] = $sales;
-        return view('reports.report2-print', $data);
-    }
-
-    public function sale_summary()
-    {
-        if(!Right::check('sale_summary', 'l')){
-            return view('permissions.no');
-        }
-        $data['start'] = date('Y-m-d');
-        $data['end'] = date('Y-m-d');
-       
-        $data['sales'] = [];
-        $data['pid'] = 'all';
-        return view('reports.report3', $data);
-    }
-    public function search_sale_summary(Request $r)
-    {
-        if(!Right::check('sale_summary', 'l')){
-            return view('permissions.no');
-        }
-        $data['start'] = $r->start;
-        $data['end'] = $r->end;
-
-        $sales = DB::select("
-            select products.name, products.kh_name, products.code, sum(invoice_details.quantity) as total1,
-            sum(invoice_details.subtotal) as total2, units.name as uname  
-            from invoice_details  
-            inner join invoices on invoice_details.invoice_id=invoices.id 
-            inner join products on invoice_details.product_id=products.id
-            inner join units on products.unit_id=units.id 
-            where invoices.invoice_date>='{$r->start}' and invoices.invoice_date<='{$r->end}' 
-            group by products.id, products.name, products.kh_name, products.unit_id, products.code, units.name
-        ");
-       
-        $data['sales'] = $sales;
-        return view('reports.report3', $data);
-    }
-    public function print_sale_summary(Request $r)
-    {
-        if(!Right::check('sale_summary', 'l')){
-            return view('permissions.no');
-        }
-        $data['start'] = $r->start;
-        $data['end'] = $r->end;
-
-        $sales = DB::select("
-            select products.name, products.kh_name, products.code, sum(invoice_details.quantity) as total1,
-            sum(invoice_details.subtotal) as total2, units.name as uname  
-            from invoice_details  
-            inner join invoices on invoice_details.invoice_id=invoices.id 
-            inner join products on invoice_details.product_id=products.id
-            inner join units on products.unit_id=units.id 
-            where invoices.invoice_date>='{$r->start}' and invoices.invoice_date<='{$r->end}' 
-            group by products.id, products.name, products.unit_id, products.code, products.kh_name,units.name
-        ");
         $data['com'] = DB::table('companies')->find(1);
-        $data['sales'] = $sales;
-        return view('reports.report3-print', $data);
+        return view('reports.payment-print', $data);
     }
-    public function in()
+    public function expense()
     {
-        if(!Right::check('stock_in', 'l')){
-            return view('permissions.no');
-        }
+        $data['sh'] = 'all';
         $data['start'] = date('Y-m-d');
         $data['end'] = date('Y-m-d');
-        $data['products'] = DB::table('products')
+        $data['loans'] = [];
+        $data['shops'] = DB::table('phone_shops')
             ->where('active', 1)
             ->get();
-        $data['ins'] = [];
-        $data['pid'] = 'all';
-        return view('reports.report4', $data);
-        
+
+        return view('reports.expense', $data);
     }
-    public function search_in(Request $r)
+    public function search_expense(Request $r)
     {
-        if(!Right::check('stock_in', 'l')){
-            return view('permissions.no');
-        }
+        $data['sh'] = $r->shop;
         $data['start'] = $r->start;
         $data['end'] = $r->end;
-        $data['products'] = DB::table('products')
+        
+        $data['shops'] = DB::table('phone_shops')
             ->where('active', 1)
             ->get();
-        
-        $data['pid'] = $r->product;
-        $ins = DB::table('stock_in_details')
-            ->join('stock_ins', 'stock_in_details.stock_in_id', 'stock_ins.id')
-            ->join('products', 'stock_in_details.product_id', 'products.id')
-            ->leftJoin('units', 'products.unit_id', 'units.id')
-            ->where('stock_in_details.in_date', '>=', $r->start)
-            ->where('stock_in_details.in_date', '<=', $r->end);
-        if($r->product!='all')
+        $q =  DB::table('loans')
+            ->join('customers', 'loans.customer_id', 'customers.id')
+            ->join('phone_shops', 'loans.shop_id', 'phone_shops.id')
+            ->where('loans.active', 1)
+            ->where('loans.release_date', '>=', $r->start)
+            ->where('loans.release_date', '<=', $r->end);
+        if($r->shop!='all')
         {
-            $ins = $ins->where('stock_in_details.product_id', $r->product);
+            $q = $q->where('loans.shop_id', $r->shop);
         }
-        $data['ins'] = $ins->select('stock_in_details.*', 'stock_ins.reference', 'units.name as uname',
-            'products.code', 'products.name', 'products.kh_name')
+        $data['loans']  =  $q->select('loans.*', 'customers.name', 'phone_shops.name as shop_name' )
+            ->orderBy('loans.release_date' , 'desc')
             ->get();
-        return view('reports.report4', $data);
-        
+        return view('reports.expense', $data);
     }
-    public function print_in(Request $r)
+    public function print_expense(Request $r)
     {
-        if(!Right::check('stock_in', 'l')){
-            return view('permissions.no');
-        }
+       
         $data['start'] = $r->start;
         $data['end'] = $r->end;
-
-        $ins = DB::table('stock_in_details')
-            ->join('stock_ins', 'stock_in_details.stock_in_id', 'stock_ins.id')
-            ->join('products', 'stock_in_details.product_id', 'products.id')
-            ->leftJoin('units', 'products.unit_id', 'units.id')
-            ->where('stock_in_details.in_date', '>=', $r->start)
-            ->where('stock_in_details.in_date', '<=', $r->end);
-        if($r->pid!='all')
+        $q =  DB::table('loans')
+            ->join('customers', 'loans.customer_id', 'customers.id')
+            ->join('phone_shops', 'loans.shop_id', 'phone_shops.id')
+            ->where('loans.active', 1)
+            ->where('loans.release_date', '>=', $r->start)
+            ->where('loans.release_date', '<=', $r->end);
+        if($r->sid!='all')
         {
-            $ins = $ins->where('stock_in_details.product_id', $r->pid);
+            $q = $q->where('loans.shop_id', $r->sid);
         }
-        $data['ins'] = $ins->select('stock_in_details.*', 'stock_ins.reference', 'units.name as uname',
-            'products.code', 'products.name', 'products.kh_name')
+        $data['loans']  =  $q->select('loans.*', 'customers.name', 'phone_shops.name as shop_name' )
+            ->orderBy('loans.release_date' , 'desc')
             ->get();
         $data['com'] = DB::table('companies')->find(1);
-        return view('reports.report4-print', $data);
-        
-    }
-    public function in_summary()
-    {
-        if(!Right::check('stock_in_summary', 'l')){
-            return view('permissions.no');
-        }
-        $data['start'] = date('Y-m-d');
-        $data['end'] = date('Y-m-d');
-        $data['ins'] = [];
-        return view('reports.report5', $data);
-    }
-    public function search_in_summary(Request $r)
-    {
-        if(!Right::check('stock_in_summary', 'l')){
-            return view('permissions.no');
-        }
-        $data['start'] = $r->start;
-        $data['end'] = $r->end;
-        $data['ins'] = DB::select("
-            select products.code, products.name, products.kh_name, units.name as uname, 
-            sum(stock_in_details.quantity) as total from stock_in_details 
-            inner join products on stock_in_details.product_id=products.id 
-            inner join units on products.unit_id=units.id 
-            where stock_in_details.in_date >= '{$r->start}' and stock_in_details.in_date <= '{$r->end}' 
-            group by products.code, products.name, products.kh_name,
-            units.name
-        ");
-        return view('reports.report5', $data);
-    }
-    public function print_in_summary(Request $r)
-    {
-        if(!Right::check('stock_in_summary', 'l')){
-            return view('permissions.no');
-        }
-        $data['start'] = $r->start;
-        $data['end'] = $r->end;
-        $data['ins'] = DB::select("
-            select products.code, products.name, products.kh_name, units.name as uname, 
-            sum(stock_in_details.quantity) as total from stock_in_details 
-            inner join products on stock_in_details.product_id=products.id 
-            inner join units on products.unit_id=units.id 
-            where stock_in_details.in_date >= '{$r->start}' and stock_in_details.in_date <= '{$r->end}' 
-            group by products.code, products.name, products.kh_name,
-            units.name
-        ");
-        $data['com'] = DB::table('companies')->find(1);
-        return view('reports.report5-print', $data);
-    }
-    public function out()
-    {
-        if(!Right::check('stock_out', 'l')){
-            return view('permissions.no');
-        }
-        $data['start'] = date('Y-m-d');
-        $data['end'] = date('Y-m-d');
-        $data['products'] = DB::table('products')
-            ->where('active', 1)
-            ->get();
-        $data['outs'] = [];
-        $data['pid'] = 'all';
-        return view('reports.report6', $data);
-        
-    }
-    public function search_out(Request $r)
-    {
-        if(!Right::check('stock_out', 'l')){
-            return view('permissions.no');
-        }
-        $data['start'] = $r->start;
-        $data['end'] = $r->end;
-        $data['products'] = DB::table('products')
-            ->where('active', 1)
-            ->get();
-
-        $data['pid'] = $r->product;
-        $outs = DB::table('stock_out_details')
-            ->join('stock_outs', 'stock_out_details.stock_out_id', 'stock_outs.id')
-            ->join('products', 'stock_out_details.product_id', 'products.id')
-            ->leftJoin('units', 'products.unit_id', 'units.id')
-            ->where('stock_out_details.out_date','>=', $r->start)
-            ->where('stock_out_details.out_date','<=', $r->end);
-        if($r->product!='all')
-        {
-            $outs = $outs->where('stock_out_details.product_id', $r->product);
-        }
-        $outs = $outs->select('stock_out_details.*','stock_outs.reference', 'products.code', 
-                'products.name', 'products.kh_name', 'units.name as uname')
-                ->orderBy('stock_out_details.id')
-                ->get();
-        $data['outs'] = $outs;
-        return view('reports.report6', $data);
-        
-    }
-    public function print_out(Request $r)
-    {
-        if(!Right::check('stock_out', 'l')){
-            return view('permissions.no');
-        }
-        $data['start'] = $r->start;
-        $data['end'] = $r->end;
-        
-        $outs = DB::table('stock_out_details')
-            ->join('stock_outs', 'stock_out_details.stock_out_id', 'stock_outs.id')
-            ->join('products', 'stock_out_details.product_id', 'products.id')
-            ->leftJoin('units', 'products.unit_id', 'units.id')
-            ->where('stock_out_details.out_date','>=', $r->start)
-            ->where('stock_out_details.out_date','<=', $r->end);
-        if($r->pid!='all')
-        {
-            $outs = $outs->where('stock_out_details.product_id', $r->pid);
-        }
-        $outs = $outs->select('stock_out_details.*','stock_outs.reference', 'products.code', 
-                'products.name', 'products.kh_name', 'units.name as uname')
-                ->orderBy('stock_out_details.id')
-                ->get();
-        $data['outs'] = $outs;
-        $data['com'] = DB::table('companies')->find(1);
-        return view('reports.report6-print', $data);
-        
-    }
-    public function out_summary()
-    {
-        if(!Right::check('stock_out_summary', 'l')){
-            return view('permissions.no');
-        }
-        $data['start'] = date('Y-m-d');
-        $data['end'] = date('Y-m-d');
-       
-        $data['outs'] = [];
-        return view('reports.report7', $data);
-        
-    }
-    public function search_out_summary(Request $r)
-    {
-        if(!Right::check('stock_out_summary', 'l')){
-            return view('permissions.no');
-        }
-        $data['start'] = $r->start;
-        $data['end'] = $r->end;
-       
-        $data['outs'] = DB::select("
-            select products.code, products.name, products.kh_name, sum(stock_out_details.quantity) as total, 
-            units.name as uname from stock_out_details 
-            inner join products on stock_out_details.product_id=products.id 
-            inner join units on products.unit_id=units.id 
-            where stock_out_details.out_date between '{$r->start}' and '{$r->end}' 
-            group by products.code, products.kh_name, products.name, units.name
-        ");
-        return view('reports.report7', $data);
-        
-    }
-    public function print_out_summary(Request $r)
-    {
-        if(!Right::check('stock_out_summary', 'l')){
-            return view('permissions.no');
-        }
-        $data['start'] = $r->start;
-        $data['end'] = $r->end;
-       
-        $data['outs'] = DB::select("
-            select products.code, products.name, products.kh_name, sum(stock_out_details.quantity) as total, 
-            units.name as uname from stock_out_details 
-            inner join products on stock_out_details.product_id=products.id 
-            inner join units on products.unit_id=units.id 
-            where stock_out_details.out_date between '{$r->start}' and '{$r->end}' 
-            group by products.code, products.kh_name, products.name, units.name
-        ");
-        $data['com'] = DB::table('companies')->find(1);
-        return view('reports.report7-print', $data);
-        
-    }
-    public function customer()
-    {
-        if(!Right::check('sale_report', 'l')){
-            return view('permissions.no');
-        }
-        $data['start'] = date('Y-m-d');
-        $data['end'] = date('Y-m-d');
-        $data['customers'] = DB::table('customers')
-            ->where('active', 1)
-            ->get();
-        $data['sales'] = [];
-        $data['cid'] = 'all';
-        return view('reports.report8', $data);
-    }
-    public function search_customer(Request $r)
-    {
-        if(!Right::check('sale_report', 'l')){
-            return view('permissions.no');
-        }
-        $data['start'] = $r->start;
-        $data['end'] = $r->end;
-        $data['cid'] = $r->customer;
-
-        $data['customers'] = DB::table('customers')
-            ->where('active', 1)
-            ->get();
-        $sales = DB::table('invoice_details')            
-            ->join('invoices', 'invoice_details.invoice_id', 'invoices.id')
-            ->join('products', 'invoice_details.product_id', 'products.id')
-            ->join('customers', 'invoices.customer_id', 'customers.id')
-            ->leftJoin('units', 'products.unit_id', 'units.id')
-            ->where('invoices.invoice_date','>=', $r->start)
-            ->where('invoices.invoice_date', '<=', $r->end)
-            ->where('invoices.customer_id', $r->customer);
-       
-        $sales = $sales->orderBy('invoice_details.id')
-            ->select('invoices.invoice_date', 'invoices.id as inv_no', 'products.name', 'products.kh_name', 
-                'invoices.reference', 'units.name as uname', 'invoice_details.*')
-            ->get();
-        $data['sales'] = $sales;
-        $data['customer'] = DB::table('customers')->find($r->customer);
-        return view('reports.report8', $data);
-    }
-    public function print_customer(Request $r)
-    {
-        if(!Right::check('sale_report', 'l')){
-            return view('permissions.no');
-        }
-        $data['start'] = $r->start;
-        $data['end'] = $r->end;
-
-        $sales = DB::table('invoice_details')            
-            ->join('invoices', 'invoice_details.invoice_id', 'invoices.id')
-            ->join('products', 'invoice_details.product_id', 'products.id')
-            ->join('customers', 'invoices.customer_id', 'customers.id')
-            ->leftJoin('units', 'products.unit_id', 'units.id')
-            ->where('invoices.invoice_date','>=', $r->start)
-            ->where('invoices.invoice_date', '<=', $r->end)
-            ->where('invoices.customer_id', $r->cid);
-       
-        $sales = $sales->orderBy('invoice_details.id')
-            ->select('invoices.invoice_date', 'invoices.id as inv_no', 'products.name', 'products.kh_name', 
-                'invoices.reference', 'units.name as uname', 'invoice_details.*')
-            ->get();
-        $data['sales'] = $sales;
-        $data['customer'] = DB::table('customers')->find($r->cid);
-        $data['com'] = DB::table('companies')->find(1);
-        return view('reports.report8-print', $data);
+        return view('reports.expense-print', $data);
     }
 }

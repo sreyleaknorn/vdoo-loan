@@ -153,6 +153,7 @@
                                     </a>
                                     <ul class="sidebar-nav"  id="report_collapse">
                                         <li id='menu_report1'>
+<<<<<<< HEAD
                                             <a href="{{url('report/payment')}}">៧.១ របាយការណ៍បង់ប្រាក់</a>
                                         </li>
                                         <li id='menu_report2'>
@@ -160,6 +161,15 @@
                                         </li>       
                                     </ul>
                                 </li>
+=======
+                                            <a href="{{url('report/payment')}}">៧.១ ចំណូល</a>
+                                        </li>
+                                        <li id='menu_report2'>
+                                            <a href="{{url('report/expense')}}">៧.២ ចំណាយ</a>
+                                        </li>
+									</ul>
+								</li>
+>>>>>>> 50fc076d8ff8003104d22169c02eb8114259f4e3
                             </ul>
                         </nav>
                     </div>
