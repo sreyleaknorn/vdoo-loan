@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use Auth;
-use Carbon\Carbon;
-
 class ReportController extends Controller
 {
     public function __construct()
@@ -14,66 +12,19 @@ class ReportController extends Controller
         $this->middleware('auth');
         
     }
-    public function payment()
+    public function onhand()
     {
-        if(!Right::check('payment_report', 'l')){
+        if(!Right::check('stock_balance', 'l')){
             return view('permissions.no');
         }
-        $data['customers'] = DB::table('customers')
-			->where('active', 1)
-			->orderBy('name')
-			->get();
-        
-        $data['start'] = date('Y-m-d');
-        $data['end'] = date('Y-m-d');
-        $data['loanpayments'] = [];
-        $data['shops'] = DB::table('phone_shops')
-                ->where('active', 1)
-                ->get();
-        $data['sh'] = 'all';
-        $data['customer_id'] = 'all';
-        $data['q'] = '';
-        return view('reports.payment', $data);
+        $data['products'] = DB::table('products')
+            ->leftJoin('units', 'products.unit_id', 'units.id')
+            ->leftJoin('categories', 'products.category_id', 'categories.id')
+            ->where('products.active', 1)
+            ->select('products.*', 'units.name as uname', 'categories.name as cname')
+            ->get();
+        return view('reports.report1', $data);
     }
-    public function search_payment(Request $r)
-    {
-        if(!Right::check('payment_report', 'l')){
-            return view('permissions.no');
-        }
-        $data['sh'] = $r->shop;
-        $data['customer_id'] = $r->customer_id;
-        $data['start'] = $r->start;
-        $data['end'] = $r->end;
-        $data['q'] = '';
-        $q = DB::table('loanpayments')
-                ->join('loans', 'loans.id', '=', 'loanpayments.loan_id')
-                ->join('customers', 'customers.id', '=', 'loans.customer_id')
-                ->join('phone_shops', 'phone_shops.id', '=', 'loans.shop_id')
-                ->where('loanpayments.active', 1)
-                ->where('loanpayments.receive_date', '>=', $r->start)
-                ->where('loanpayments.receive_date', '<=', $r->end);
-
-        if ($r->shop != 'all') {
-            $q = $q->where('phone_shops.id', $r->shop);
-        }
-        if ($r->customer_id != 'all') {
-            $q = $q->where('customers.id', $r->customer_id);
-        }
-
-        $data['loanpayments'] = $q->select('loanpayments.*', 'customers.name', 'customers.phone', 'phone_shops.name as shop_name')
-                ->orderBy('loanpayments.receive_date', 'DESC')
-                ->get();
-
-        $data['shops'] = DB::table('phone_shops')
-                ->where('active', 1)
-                ->get();
-        $data['customers'] = DB::table('customers')
-			->where('active', 1)
-			->orderBy('name')
-			->get();
-        return view('reports.payment', $data);
-    }
-    
     public function onhand_print()
     {
         if(!Right::check('stock_balance', 'l')){

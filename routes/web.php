@@ -82,5 +82,6 @@ Route::get('loanpayment', 'LoanPaymentController@index');
 Route::get('loanpayment/print/{id}', 'LoanPaymentController@print');
 
 // report
-
+Route::get('report/payment', 'ReportController@payment');
+Route::get('report/payment/search', 'ReportController@search_payment');
 

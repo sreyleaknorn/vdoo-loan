@@ -20,10 +20,7 @@
                 <button><i class="fa fa-search"></i> ស្វែងរក</button>
             </form>
             <p></p>
-            <form action="{{url('search')}}">
-                អតិថិជន: <input type="text" name='q' placeholder="ឈ្មោះ ឬលេខទូរស័ព្ទ" value="{{$q}}">
-                <button><i class="fa fa-search"></i> ស្វែងរក</button>
-            </form>
+            
             <p></p>
         </div>
     </div>
