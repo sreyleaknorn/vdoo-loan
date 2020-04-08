@@ -64,7 +64,7 @@ class LoanScheduleController extends Controller {
                 ->join('customers', 'customers.id', '=', 'loans.customer_id')
                 ->join('phone_shops', 'phone_shops.id', '=', 'loans.shop_id')
                 ->select('loanschedules.*', 'customers.name', 'customers.phone', 'phone_shops.name as shop_name')
-                ->where([['loanschedules.active', 1], ['ispaid', 0], ['pay_date', '<', date('Y-m-d')]])
+                ->where([['loanschedules.active', 1], ['ispaid', 0], ['pay_date', '<', date('Y-m-d')], ['loans.status' ,'!=' ,'stopped']])
                 ->orderBy('loanschedules.pay_date', 'ASC')
                 ->paginate(config('app.row'));
         return view('loanschedules.late', $data);
