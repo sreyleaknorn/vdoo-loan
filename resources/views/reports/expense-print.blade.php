@@ -53,56 +53,38 @@
                 <th>លេខកូដ</th>
                 <th>អតិថិជន</th>
                 <th>ហាង</th>
-                <th>ថ្ងៃត្រូវបង់</th>
-                <th>ប្រាក់ដើម</th>
-                <th>ការប្រាក់</th>
+                <th>ថ្ងៃខ្ចី</th>
+                <th>ថ្ងៃចេញប្រាក់</th>
                 <th>ចំនួនសរុប</th>
-                <th>ចំនួនបានបង់</th>
-                <th>ថ្ងៃបានបង់</th>
+                <th>លេខបុង</th>
+                <th>ទូរស័ព្ទ</th>
             </tr>
         </thead>
         <tbody>
             @php($i=1)
-            @php($total1=0)
-            @php($total2=0)
-            @php($total3=0)
-            @php($total4=0)
-            @foreach($payments as $p)
+            @php($total=0)
+            @foreach($loans as $l)
                 <tr>
                     <td>{{$i++}}</td>
-                    <td>L000{{$p->loan_id}}</td>
-                    <td>{{$p->name}} - {{$p->phone}}</td>
-                    <td>{{$p->shop_name}}</td>
-                    <td>{{$p->pay_date}}</td>
-                    <td>$ {{$p->principal_amount}}</td>
-                    <td>$ {{$p->interest_amount}}</td>
-                    <td>$ {{$p->total_amount}}</td>
-                    <td>$ {{$p->paid_amount}}</td>
-                    <td>{{$p->paid_date}}</td>
-                    <?php
-                            $total1 += $p->principal_amount;
-                            $total2 += $p->interest_amount;
-                            $total3 += $p->paid_amount;
-                            $total4 += $p->total_amount;
-                    ?>
+                    <td>L000{{$l->id}}</td>
+                    <td>{{$l->name}}</td>
+                    <td>{{$l->shop_name}}</td>
+                    <td>{{$l->loan_date}}</td>
+                    <td>{{$l->release_date}}</td>
+                    <td>$ {{$l->loan_amount}}</td>
+                    <td>{{$l->bill_no}}</td>
+                    <td>{{$l->model_name}}</td>
                 </tr>
+                <?php $total += $l->loan_amount; ?>
             @endforeach
            <tr>
-               <td colspan="5" class="text-right">
+               <td colspan="6" class="text-right">
                    <strong class="text-danger">សរុបរួម</strong>
                </td>
-               <td>
-                   <strong class="text-danger">$ {{$total1}}</strong>
+               <td colspan="3">
+                   <strong class="text-danger">$ {{$total}}</strong>
                </td>
-               <td>
-                    <strong class="text-danger">$ {{$total2}}</strong>
-                </td>
-                <td>
-                    <strong class="text-danger">$ {{$total4}}</strong>
-                </td>
-                <td colspan="2">
-                    <strong class="text-danger">$ {{$total3}}</strong>
-                </td>
+              
            </tr>
         </tbody>
     </table>
@@ -120,6 +102,7 @@
         </tr>
     </table>
     <p>&nbsp;</p>
+   
     <script>
         print();
     </script>
