@@ -71,64 +71,9 @@ class ReportController extends Controller {
         return view('reports.payment', $data);
     }
 
-    public function onhand_print() {
-        if (!Right::check('stock_balance', 'l')) {
-            return view('permissions.no');
-        }
-        $data['products'] = DB::table('products')
-                ->leftJoin('units', 'products.unit_id', 'units.id')
-                ->leftJoin('categories', 'products.category_id', 'categories.id')
-                ->where('products.active', 1)
-                ->select('products.*', 'units.name as uname', 'categories.name as cname')
-                ->get();
-        $data['com'] = DB::table('companies')->find(1);
-        return view('reports.report1-print', $data);
-    }
 
-    public function sale() {
-        if (!Right::check('sale_report', 'l')) {
-            return view('permissions.no');
-        }
-    }
 
-    /* public function payment()
-      {
-      $data['sh'] = 'all';
 
-      $data['start'] = date('Y-m-d');
-      $data['end'] = date('Y-m-d');
-      $data['payments'] = [];
-      $data['shops'] = DB::table('phone_shops')
-      ->where('active', 1)
-      ->get();
-      return view('reports.payment', $data);
-      }
-      public function search_payment(Request $r)
-      {
-      $data['sh'] = $r->shop;
-      $data['start'] = $r->start;
-      $data['end'] = $r->end;
-
-      $data['shops'] = DB::table('phone_shops')
-      ->where('active', 1)
-      ->get();
-      $q =  DB::table('loanschedules')
-      ->join('loans', 'loans.id', '=', 'loanschedules.loan_id')
-      ->join('customers', 'customers.id', '=', 'loans.customer_id')
-      ->join('phone_shops', 'phone_shops.id', '=', 'loans.shop_id')
-      ->where('loanschedules.active', 1)
-      ->where('loanschedules.pay_date', '>=', $r->start)
-      ->where('loanschedules.pay_date', '<=', $r->end)
-      ->where('loanschedules.due_amount','<=', 0);
-      if($r->shop!='all')
-      {
-      $q = $q->where('loans.shop_id', $r->shop);
-      }
-      $data['payments']  =  $q->select('loanschedules.*', 'customers.name', 'customers.phone' , 'phone_shops.name as shop_name' )
-      ->orderBy('loanschedules.pay_date' , 'ASC')
-      ->get();
-      return view('reports.payment', $data);
-      } */
 
     public function print_payment(Request $r) {
 
@@ -160,6 +105,9 @@ class ReportController extends Controller {
     }
 
     public function expense() {
+        if (!Right::check('expense_report', 'l')) {
+            return view('permissions.no');
+        }
         $data['sh'] = 'all';
         $data['start'] = date('Y-m-d');
         $data['end'] = date('Y-m-d');
@@ -172,6 +120,9 @@ class ReportController extends Controller {
     }
 
     public function search_expense(Request $r) {
+        if (!Right::check('expense_report', 'l')) {
+            return view('permissions.no');
+        }
         $data['sh'] = $r->shop;
         $data['start'] = $r->start;
         $data['end'] = $r->end;
@@ -196,6 +147,9 @@ class ReportController extends Controller {
 
     public function print_expense(Request $r) {
 
+        if (!Right::check('expense_report', 'l')) {
+            return view('permissions.no');
+        }
         $data['start'] = $r->start;
         $data['end'] = $r->end;
         $q = DB::table('loans')
