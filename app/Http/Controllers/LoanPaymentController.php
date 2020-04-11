@@ -69,9 +69,9 @@ class LoanPaymentController extends Controller {
                 ->where('active', 1)
                 ->get();
         return view('loanpayments.index', $data);
-    }
+        }
 
-    public function print($id) {
+        public function print($id) {
         if (!Right::check('loanpayment', 'l')) {
             return view('permissions.no');
         }
@@ -87,6 +87,80 @@ class LoanPaymentController extends Controller {
                 ->first();
 
         return view('loanpayments.print', $data);
+    }
+
+    public function fast($id) {
+        if (!Right::check('loanpayment', 'i')) {
+            return view('permissions.no');
+        }
+        $sc = DB::table('loanschedules')
+                ->join('loans', 'loans.id', '=', 'loanschedules.loan_id')
+                ->where('loanschedules.id', $id)
+                ->select('loanschedules.*', 'loans.customer_id')
+                ->first();
+        $receive_amount = $sc->due_amount;
+        $paid_date = date('Y-m-d');
+
+        /// add to loanpayments table
+        $data_payment = array(
+            'customer_id' => $sc->customer_id,
+            'loan_id' => $sc->loan_id,
+            'loanschedule_id' => $id,
+            'receive_amount' => $receive_amount,
+            'receive_date' => $paid_date
+        );
+        DB::table('loanpayments')->insertGetId($data_payment);
+        
+        /// update schedule
+            $paid_amount = $sc->paid_amount;
+            $new_paid_amount = $paid_amount + $receive_amount;
+            $due_amount = $sc->due_amount;
+            $new_due_amount = $due_amount - $receive_amount;
+            if ($new_due_amount > 0) {
+                $ispaid = 0;
+                $paid_date = null;
+            } else {
+                $ispaid = 1;
+                $paid_date = $paid_date;
+            }
+            $data_schedule = array(
+                'due_amount' => $new_due_amount,
+                'paid_amount' => $new_paid_amount,
+                'paid_date' => $paid_date,
+                'ispaid' => $ispaid
+            );
+            DB::table('loanschedules')
+                    ->where('id', $id)
+                    ->update($data_schedule);
+
+            /// update loan
+            $loandata = DB::table('loans')
+                    ->where('id', $sc->loan_id)
+                    ->first();
+
+            $paid_amount = $loandata->paid_amount + $receive_amount;
+            $due_amount = $loandata->total_amount - $paid_amount;
+
+            if ($due_amount <= 0 || $due_amount < 0.01) {
+                $status = 'paid';
+                $paid_date = $paid_date;
+            } else {
+                $status = 'paying';
+                $paid_date = null;
+            }
+
+            $data_loan = array(
+                'due_amount' => $due_amount,
+                'paid_amount' => $paid_amount,
+                'paid_date' => $paid_date,
+                'status' => $status
+            );
+            
+            DB::table('loans')
+                ->where('id', $sc->loan_id)
+                ->update($data_loan);
+
+        return redirect()->back();
     }
 
 }

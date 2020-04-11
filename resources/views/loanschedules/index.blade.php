@@ -12,7 +12,7 @@
                 <option value="{{$s->id}}" {{$sh==$s->id?'selected':''}}>{{$s->name}} - {{$s->phone}}</option>
                 @endforeach
             </select>
-            ចាប់ពី: 
+           	ថ្ងៃត្រូវបង់ ចាប់ពី: 
             <input type="date" name='start' value="{{$start}}" required> 
             ដល់: 
             <input type="date" name='end' value="{{$end}}" required>
@@ -29,7 +29,7 @@
 
         @component('coms.alert')
         @endcomponent
-        
+
 
         <div class="table-flip-scroll">
             <div class="table-responsive">
@@ -82,9 +82,14 @@
                                 <?php
                                 if ($ls->ispaid == 0) {
                                     ?>
-                                    <a href="{{url('loan/pay/'.$ls->id)}}" class="btn btn-primary-outline btn-oval btn-sm mx-left"> 
+                                <a href="{{url('payment/fast/'.$ls->id)}}" class="btn btn-primary btn-oval btn-sm" onclick="return confirm('Are you sure to save?')"> 
+                                        បង់រហ័ស</a>
+                                    <a href="{{url('loan/pay/'.$ls->id)}}" class="btn btn-primary-outline btn-oval btn-sm"> 
                                         <i class="fa fa-dollar"></i> បង់ប្រាក់</a>
+                                        
                                         <?php
+                                    }else {
+                                        echo '<span class="badge badge-info">បានបង់</span>';
                                     }
                                     ?>
 
@@ -97,7 +102,7 @@
             </div>
         </div>
         <p>&nbsp;</p>
-        
+
         {{ $loanschedules->appends(request()->input())->links() }}
 
     </div>

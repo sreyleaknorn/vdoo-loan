@@ -61,6 +61,7 @@ Route::post('customer/add_customer', 'CustomerController@add_customer');
 
 // loan
 Route::get('loan', 'LoanController@index');
+Route::get('loan/search', 'LoanController@search');
 Route::get('loan/create', 'LoanController@create');
 Route::get('loan/test', 'LoanController@test');
 Route::post('loan/save', 'LoanController@save');
@@ -79,6 +80,7 @@ Route::get('loanschedule/today', 'LoanScheduleController@today');
 Route::get('loanschedule/late', 'LoanScheduleController@late');
 //// loan schedule
 Route::get('loanpayment', 'LoanPaymentController@index');
+Route::get('payment/fast/{id}', 'LoanPaymentController@fast');
 Route::get('loanpayment/print/{id}', 'LoanPaymentController@print');
 
 // report
