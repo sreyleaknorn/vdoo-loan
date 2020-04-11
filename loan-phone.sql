@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 29, 2020 at 02:24 PM
+-- Generation Time: Apr 08, 2020 at 08:36 PM
 -- Server version: 5.7.29-0ubuntu0.18.04.1
 -- PHP Version: 7.2.29-1+ubuntu18.04.1+deb.sury.org+1
 
@@ -185,7 +185,7 @@ CREATE TABLE `loans` (
   `bill_no` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `loan_date` date NOT NULL,
   `release_date` date DEFAULT NULL,
-  `loan_amount` double(8,3) NOT NULL,
+  `loan_amount` double(8,2) NOT NULL,
   `loan_interest` double(8,3) NOT NULL,
   `start_interest_date` date DEFAULT NULL,
   `total_interest` double(8,3) NOT NULL DEFAULT '0.000',
@@ -207,14 +207,14 @@ CREATE TABLE `loans` (
 --
 
 INSERT INTO `loans` (`id`, `customer_id`, `shop_id`, `model_name`, `serial`, `bill_no`, `loan_date`, `release_date`, `loan_amount`, `loan_interest`, `start_interest_date`, `total_interest`, `total_amount`, `due_amount`, `paid_amount`, `num_repayment`, `repayment_type`, `active`, `note`, `status`, `paid_date`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 'iphone 7', 'AAABBBCC', NULL, '2020-03-17', '2020-03-17', 1000.000, 5.000, '2020-03-17', 600.000, 1600.000, 0.000, 1600.000, 12, 'Month', 0, NULL, 'paying', NULL, NULL, NULL),
-(2, 1, 3, 'iphone 7', 'AAABBBCC', NULL, '2020-03-17', '2020-03-17', 1000.000, 3.000, '2020-03-17', 180.000, 1180.000, 0.000, 1180.000, 6, 'Month', 1, 'testing', 'paid', '2020-03-20', NULL, NULL),
-(3, 1, 1, 'iphone 7', 'AAABBBCC', NULL, '2020-03-18', '2020-03-18', 300.000, 5.000, '2020-03-18', 45.000, 345.000, 115.000, 230.000, 3, 'Month', 0, NULL, 'paying', NULL, '2020-03-18 16:43:48', '2020-03-18 16:43:48'),
-(4, 3, 4, 'iphone 7', 'AAABBBCC', NULL, '2020-03-19', '2020-03-19', 1000.000, 5.000, '2020-03-19', 300.000, 1300.000, 866.667, 433.333, 6, 'Month', 1, 'Testing', 'stopped', NULL, '2020-03-19 09:02:29', '2020-03-19 09:02:29'),
-(5, 4, 5, 'iphone 8 plus', '0033333777788', '02333', '2020-03-20', '2020-03-20', 1000.000, 5.000, '2020-03-20', 300.000, 1300.000, 766.667, 533.333, 6, 'Month', 0, 'Tesing new', 'paying', NULL, '2020-03-20 08:31:55', '2020-03-20 08:31:55'),
-(6, 5, 6, 'iPhone X max', 'XXXMMM', 'INV00001', '2020-03-22', '2020-03-22', 1000.000, 2.000, '2020-03-22', 200.000, 1200.000, 0.000, 1200.000, 10, 'Month', 1, NULL, 'paid', '2020-03-25', '2020-03-22 04:13:44', '2020-03-22 04:13:44'),
-(7, 2, 2, 'iphone 8', 'AAABBBCC', 'INV00005', '2020-03-27', '2020-03-27', 800.000, 4.000, '2020-03-27', 192.000, 992.000, 0.000, 915.333, 6, 'Month', 1, NULL, 'paid', '2020-03-28', '2020-03-27 08:44:30', '2020-03-27 08:44:30'),
-(8, 4, 6, 'Sumsung', 'hhssss', 'INV00006', '2020-03-28', '2020-03-28', 500.000, 4.000, '2020-03-28', 120.000, 620.000, 620.000, 0.000, 6, 'Month', 1, NULL, 'stopped', NULL, '2020-03-28 03:04:03', '2020-03-28 03:04:03');
+(1, 1, 1, 'iphone 7', 'AAABBBCC', NULL, '2020-03-17', '2020-03-17', 1000.00, 5.000, '2020-03-17', 600.000, 1600.000, 0.000, 1600.000, 12, 'Month', 0, NULL, 'paying', NULL, NULL, NULL),
+(2, 1, 3, 'iphone 7', 'AAABBBCC', NULL, '2020-03-17', '2020-03-17', 1000.00, 3.000, '2020-03-17', 180.000, 1180.000, 0.000, 1180.000, 6, 'Month', 1, 'testing', 'paid', '2020-03-20', NULL, NULL),
+(3, 1, 1, 'iphone 7', 'AAABBBCC', NULL, '2020-03-18', '2020-03-18', 300.00, 5.000, '2020-03-18', 45.000, 345.000, 115.000, 230.000, 3, 'Month', 0, NULL, 'paying', NULL, '2020-03-18 16:43:48', '2020-03-18 16:43:48'),
+(4, 3, 4, 'iphone 7', 'AAABBBCC', NULL, '2020-03-19', '2020-03-19', 1000.00, 5.000, '2020-03-19', 300.000, 1300.000, 866.667, 433.333, 6, 'Month', 1, 'Testing', 'stopped', NULL, '2020-03-19 09:02:29', '2020-03-19 09:02:29'),
+(5, 4, 5, 'iphone 8 plus', '0033333777788', '02333', '2020-03-20', '2020-03-20', 1000.00, 5.000, '2020-03-20', 300.000, 1300.000, 766.667, 533.333, 6, 'Month', 0, 'Tesing new', 'paying', NULL, '2020-03-20 08:31:55', '2020-03-20 08:31:55'),
+(6, 5, 6, 'iPhone X max', 'XXXMMM', 'INV00001', '2020-03-22', '2020-03-22', 1000.00, 2.000, '2020-03-22', 200.000, 1200.000, 0.000, 1200.000, 10, 'Month', 1, NULL, 'paid', '2020-03-25', '2020-03-22 04:13:44', '2020-03-22 04:13:44'),
+(7, 2, 2, 'iphone 8', 'AAABBBCC', 'INV00005', '2020-03-27', '2020-03-27', 800.00, 4.000, '2020-03-27', 192.000, 992.000, 0.000, 915.333, 6, 'Month', 1, NULL, 'paid', '2020-03-28', '2020-03-27 08:44:30', '2020-03-27 08:44:30'),
+(8, 4, 6, 'Sumsung', 'hhssss', 'INV00006', '2020-03-28', '2020-03-28', 500.00, 4.000, '2020-03-28', 120.000, 620.000, 620.000, 0.000, 6, 'Month', 1, NULL, 'stopped', NULL, '2020-03-28 03:04:03', '2020-03-28 03:04:03');
 
 -- --------------------------------------------------------
 
@@ -319,29 +319,17 @@ CREATE TABLE `permissions` (
 --
 
 INSERT INTO `permissions` (`id`, `name`, `alias`, `list`, `insert`, `update`, `delete`) VALUES
-(1, 'Role', 'Role', 0, 0, 0, 0),
-(2, 'User', 'User', 0, 0, 0, 0),
-(3, 'permission', 'Permission', 0, 0, 0, 0),
-(4, 'company', 'Company', 0, 0, 0, 0),
-(9, 'uom', 'Unit', 0, 0, 0, 0),
-(54, 'category', 'Category', 0, 0, 0, 0),
-(55, 'exchange', 'Exchange', 0, 0, 0, 0),
-(57, 'product', 'Products', 0, 0, 0, 0),
-(58, 'customer', 'Customers', 0, 0, 0, 0),
-(59, 'invoice', 'Invoices', 0, 0, 0, 0),
-(60, 'stock_in', 'Stock In', 0, 0, 0, 0),
-(61, 'stock_out', 'Stock Out', 0, 0, 0, 0),
-(62, 'stock_balance', 'Stock Balance Report', 0, 0, 0, 0),
-(63, 'sale_report', 'Sale Detail Report', 0, 0, 0, 0),
-(64, 'sale_summary', 'Sale Summary Report', 0, 0, 0, 0),
-(65, 'stock_in', 'Stock In Detail Report', 0, 0, 0, 0),
-(66, 'stock_in_summary', 'Stock In Summary Report', 0, 0, 0, 0),
-(67, 'stock_out', 'Stock Out Detail Report', 0, 0, 0, 0),
-(68, 'stock_out_summary', 'Stock Out Summary Report', 0, 0, 0, 0),
-(69, 'phone_shop', 'Phone Shop', 0, 0, 0, 0),
-(70, 'loan', 'Loan', 0, 0, 0, 0),
-(71, 'loanschedule', 'Loan Schedule', 0, 0, 0, 0),
-(72, 'loanpayment', 'Loan Payment', 0, 0, 0, 0);
+(1, 'Role', 'តួនាទី', 0, 0, 0, 0),
+(2, 'User', 'អ្នកប្រើប្រាស់', 0, 0, 0, 0),
+(3, 'permission', 'សិទ្ធិ', 0, 0, 0, 0),
+(4, 'company', 'ក្រុមហ៊ុន', 0, 0, 0, 0),
+(58, 'customer', 'អតិថិជន', 0, 0, 0, 0),
+(73, 'payment_report', 'របាយការណ៍ចំណូល', 0, 0, 0, 0),
+(69, 'phone_shop', 'ហាងទូរស័ព្ទ', 0, 0, 0, 0),
+(70, 'loan', 'កម្ចី', 0, 0, 0, 0),
+(71, 'loanschedule', 'តារាងបង់ប្រាក់', 0, 0, 0, 0),
+(72, 'loanpayment', 'ការបង់ប្រាក់', 0, 0, 0, 0),
+(74, 'expense_report', 'របាយការណ៍ចំណាយ', 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -548,7 +536,9 @@ INSERT INTO `role_permissions` (`id`, `role_id`, `permission_id`, `list`, `inser
 (123, 1, 69, 1, 1, 1, 1),
 (124, 1, 70, 1, 1, 1, 1),
 (125, 1, 71, 1, 1, 1, 1),
-(126, 1, 72, 1, 1, 1, 1);
+(126, 1, 72, 1, 1, 1, 1),
+(127, 1, 73, 1, 1, 1, 1),
+(128, 1, 74, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -714,7 +704,7 @@ ALTER TABLE `loanschedules`
 -- AUTO_INCREMENT for table `permissions`
 --
 ALTER TABLE `permissions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
 
 --
 -- AUTO_INCREMENT for table `phone_shops`
@@ -732,7 +722,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `role_permissions`
 --
 ALTER TABLE `role_permissions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=127;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=129;
 
 --
 -- AUTO_INCREMENT for table `stop_payments`
