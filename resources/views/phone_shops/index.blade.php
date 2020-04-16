@@ -27,11 +27,12 @@
 					</thead>
 					<tbody>			
 						<?php
-							$pagex = @$_GET['page'];
-							if(!$pagex)
-							$pagex = 1;
-							$i = config('app.row') * ($pagex - 1) + 1;
-						?>
+      $pagex = @$_GET['page'];
+      if (!$pagex) {
+          $pagex = 1;
+      }
+      $i = config('app.row') * ($pagex - 1) + 1;
+      ?>
 						@foreach($phone_shops as $ps)
 						<tr>
 							<td>{{$i++}}</td>
@@ -43,13 +44,20 @@
 							<td>{{$ps->address}}</td>
 							
 							<td class="action">
+								<!-- <a href="{{url('loan/search?shop='.$ps->id.'&status=all&cus=')}}" class="btn btn-success-outline btn-oval btn-sm mx-left" > 
+                                        រំលស់</a> -->
+								<a href="{{url('schedule/shop/'.$ps->id)}}" class="btn btn-primary-outline btn-oval btn-sm mx-left" > 
+                                        តារាងបង់ប្រាក់</a>
+								&nbsp;		
+								<a href="{{url('phoneshop/edit/'.$ps->id)}}" class="text-warning" title="Edit">
+									<i class="fa fa-edit"></i>
+								</a>
+								&nbsp;
 								<a href="{{url('phoneshop/delete?id='.$ps->id)}}" title="Delete" class='text-danger'
 								onclick="return confirm('អ្នកពិតជាចង់លុបទិន្នន័យ?')">
 									<i class="fa fa-trash"></i>
 								</a>&nbsp;
-								<a href="{{url('phoneshop/edit/'.$ps->id)}}" class="text-success" title="Edit">
-									<i class="fa fa-edit"></i>
-								</a>
+
 							</td>
 						</tr>
 						@endforeach

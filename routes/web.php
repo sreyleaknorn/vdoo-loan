@@ -11,8 +11,8 @@
 |
 */
 
-Route::get('/','HomeController@index');
-Route::get('home','HomeController@index');
+Route::get('/', 'HomeController@index');
+Route::get('home', 'HomeController@index');
 Route::get('logout', 'UserController@logout');
 Auth::routes();
 
@@ -21,15 +21,14 @@ Route::get('search', 'HomeController@search');
 Route::get('search-all', 'HomeController@search_all');
 Route::get('payment/search', 'LoanPaymentController@search');
 
-
 Route::get('role', 'RoleController@index');
 Route::get('role/create', 'RoleController@create');
 Route::get('role/edit/{id}', 'RoleController@edit');
 Route::get('role/delete/{id}', 'RoleController@delete');
 Route::post('role/save', 'RoleController@save');
 Route::post('role/update', 'RoleController@update');
-Route::get('role/permission/{id}', "PermissionController@index");
-Route::post('rolepermission/save', "PermissionController@save");
+Route::get('role/permission/{id}', 'PermissionController@index');
+Route::post('rolepermission/save', 'PermissionController@save');
 
 Route::get('user', 'UserController@index');
 Route::get('user/create', 'UserController@create');
@@ -48,9 +47,9 @@ Route::get('phoneshop/create', 'PhoneshopController@create');
 Route::get('phoneshop/delete', 'PhoneshopController@delete');
 Route::get('phoneshop/edit/{id}', 'PhoneshopController@edit');
 Route::post('phoneshop/save', 'PhoneshopController@save');
-Route::post('phoneshop/update', 'PhoneshopController@update');	
+Route::post('phoneshop/update', 'PhoneshopController@update');
 Route::post('phoneshop/add_shop', 'PhoneshopController@add_shop');
-	
+
 Route::get('customer', 'CustomerController@index');
 Route::get('customer/create', 'CustomerController@create');
 Route::get('customer/delete', 'CustomerController@delete');
@@ -80,6 +79,8 @@ Route::post('loan/update', 'LoanController@update');
 Route::get('loanschedule', 'LoanScheduleController@index');
 Route::get('loanschedule/today', 'LoanScheduleController@today');
 Route::get('loanschedule/late', 'LoanScheduleController@late');
+Route::get('schedule/shop/{id}', 'LoanScheduleController@byshop');
+
 //// loan schedule
 Route::get('loanpayment', 'LoanPaymentController@index');
 Route::get('payment/fast/{id}', 'LoanPaymentController@fast');
@@ -94,4 +95,3 @@ Route::get('report/payment/print', 'ReportController@print_payment');
 Route::get('report/expense', 'ReportController@expense');
 Route::get('report/expense/search', 'ReportController@search_expense');
 Route::get('report/expense/print', 'ReportController@print_expense');
-
