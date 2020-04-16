@@ -12,10 +12,18 @@
                 <option value="{{$s->id}}" {{$sh==$s->id?'selected':''}}>{{$s->name}} - {{$s->phone}}</option>
                 @endforeach
             </select>
+            ស្ថានភាព: <select name="status" id="status" style="padding: 5px 2px;font-size:12px">
+                <option value="all" {{$sh=='all'?'selected':''}}>-- ទាំងអស់ --</option>
+                <option value="0" {{$status=='0'?'selected':''}}>ជំពាក់</option>
+                <option value="1" {{$status=='1'?'selected':''}}>បានបង់</option>
+            </select>
+            <br/><br/>
            	ថ្ងៃត្រូវបង់ ចាប់ពី: 
             <input type="date" name='start' value="{{$start}}" required> 
             ដល់: 
             <input type="date" name='end' value="{{$end}}" required>
+            
+
             <button><i class="fa fa-search"></i> ស្វែងរក</button>
         </form>
         <p></p>

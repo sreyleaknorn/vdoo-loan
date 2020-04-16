@@ -73,6 +73,8 @@ Route::post('loan/save_payment', 'LoanController@save_payment');
 Route::get('loan/delete_payment', 'LoanController@delete_payment');
 Route::post('loan/save_stopped', 'LoanController@save_stopped');
 Route::get('loan/stopped', 'LoanController@stopped');
+Route::get('loan/edit/{id}', 'LoanController@edit');
+Route::post('loan/update', 'LoanController@update');
 
 //// loan schedule
 Route::get('loanschedule', 'LoanScheduleController@index');

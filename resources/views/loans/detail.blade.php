@@ -20,6 +20,13 @@
                         <i class="fa fa-times-circle"></i>​ ឈប់បង់
                     </a>
                 <?php } ?>
+                @if($loan->status == 'new')
+                    
+                    <a href="{{url('loan/edit/'.$loan->id)}}" class="btn btn-danger-outline btn-oval btn-sm mx-left">
+                    <i class="fa fa-edit"></i> កែប្រែ
+                </a>
+                @endif
+
                 <a href="{{url('loan/delete?id='.$loan->id)}}" class="btn btn-danger-outline btn-oval btn-sm mx-left" onclick="return confirm('អ្នកពិតជាចង់លុបទិន្នន័យ?')">
                     <i class="fa fa-trash"></i> លុប
                 </a>

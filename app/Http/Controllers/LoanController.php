@@ -30,6 +30,7 @@ class LoanController extends Controller {
                 ->get();
         $data['sh'] = 'all';
         $data['cus'] = '';
+        $data['status'] = 'all';
         return view('loans.index', $data);
     }
     
@@ -43,6 +44,9 @@ class LoanController extends Controller {
                 ->where('loans.active', 1);
         if ($r->shop != 'all') {
             $q = $q->where('phone_shops.id', $r->shop);
+        }  
+        if ($r->status != 'all') {
+            $q = $q->where('loans.status', $r->status);
         }     
         $cus = $r->cus;
         if($r->cus != ''){
@@ -59,6 +63,7 @@ class LoanController extends Controller {
                 ->get();
         $data['sh'] = $r->shop;
         $data['cus'] = $r->cus;
+        $data['status'] = $r->status;
         return view('loans.index', $data);
     }
 
@@ -78,7 +83,7 @@ class LoanController extends Controller {
     }
 
     public function save(Request $request) {
-        if (!Right::check('Loan', 'i')) {
+        if (!Right::check('loan', 'i')) {
             return view('permissions.no');
         }
         $validate = $request->validate([
@@ -137,6 +142,108 @@ class LoanController extends Controller {
             }
         }
         return redirect('/loan');
+    }
+
+    public function edit($id) {
+        if (!Right::check('loan', 'u')) {
+            return view('permissions.no');
+        }
+        $data['loan'] = DB::table('loans')
+                ->join('customers', 'customers.id', '=', 'loans.customer_id')
+                ->join('phone_shops', 'phone_shops.id', '=', 'loans.shop_id')
+                ->select('loans.*', 'customers.name', 'customers.phone', 'phone_shops.name as shop_name')
+                ->where([['loans.active', 1], ['loans.id', $id]])
+                ->first();
+        $data['customers'] = DB::table('customers')
+                ->where('active', 1)
+                ->orderBy('name')
+                ->get();
+        $data['phone_shops'] = DB::table('phone_shops')
+                ->where('active', 1)
+                ->orderBy('name')
+                ->get();
+
+        return view('loans.edit', $data);
+    }
+
+    public function update(Request $request) {
+        if (!Right::check('loan', 'u')) {
+            return view('permissions.no');
+        }
+        $validate = $request->validate([
+            'customer_id' => 'required',
+            'shop_id' => 'required',
+            'loan_date' => 'required',
+            'loan_amount' => 'required',
+            'loan_interest' => 'required',
+            'num_repayment' => 'required'
+        ]);
+        $loan_id = $request->id;
+        $old = DB::table('loans')
+        ->join('customers', 'customers.id', '=', 'loans.customer_id')
+        ->join('phone_shops', 'phone_shops.id', '=', 'loans.shop_id')
+        ->select('loans.*', 'customers.name', 'customers.phone', 'phone_shops.name as shop_name')
+        ->where('loans.id', $loan_id)
+        ->first();
+        
+        $num_repayment = $request->num_repayment;
+        $repayment_type = $request->repayment_type;
+
+        $schedule_amount = $request->loan_amount / $request->num_repayment;
+        $total_interest = (($request->loan_amount * $request->loan_interest) / 100) * $request->num_repayment;
+        $schedule_interest = $total_interest / $request->num_repayment;
+
+        $total_amount = $total_interest + $request->loan_amount;
+
+        $data = array(
+            'customer_id' => $request->customer_id,
+            'shop_id' => $request->shop_id,
+            'model_name' => $request->model_name,
+            'serial' => $request->serial,
+            'bill_no' => $request->bill_no,
+            'loan_amount' => $request->loan_amount,
+            'loan_interest' => $request->loan_interest,
+            'loan_date' => $request->loan_date,
+            'release_date' => $request->release_date,
+            'num_repayment' => $request->num_repayment,
+            'repayment_type' => $request->repayment_type,
+            'start_interest_date' => $request->start_interest_date,
+            'note' => $request->note,
+            'total_interest' => $total_interest,
+            'total_amount' => $total_amount,
+            'due_amount' => $total_amount
+        );
+
+        DB::table('loans')
+                ->where('id', $loan_id)
+                ->update($data);
+
+
+        if($request->num_repayment != $old->num_repayment || $request->loan_amount != $old->loan_amount || $request->loan_interest != $old->loan_interest || $request->repayment_type != $old->repayment_type  || $request->start_interest_date != $old->start_interest_date){
+            
+            DB::table('loanschedules')
+                ->where('loan_id', $loan_id)
+                ->update(['active' => 0]);
+            /* generate new schedule */
+            if ($request->num_repayment > 0) {
+                for ($i = 0; $i < $request->num_repayment; $i++) {
+                    $timestamp = strtotime($request->start_interest_date);
+                    $start_interest_date = date("d-m-Y", $timestamp);
+                    $schedule_date = $this->GenerateDateSchedule($start_interest_date, $request->repayment_type, $i + 1);
+                    $array_shcedule = array(
+                        'loan_id' => $loan_id,
+                        'pay_date' => $schedule_date,
+                        'principal_amount' => $schedule_amount,
+                        'interest_amount' => $schedule_interest,
+                        'total_amount' => $schedule_interest + $schedule_amount,
+                        'due_amount' => $schedule_interest + $schedule_amount
+                    );
+                    DB::table('loanschedules')->insertGetId($array_shcedule);
+                }
+            }
+        }
+        
+        return redirect('/loan/detail/'.$loan_id);
     }
 
     public function detail($id) {

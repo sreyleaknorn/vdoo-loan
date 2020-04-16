@@ -11,11 +11,18 @@
 
         <form action="{{url('loan/search')}}">
             <p>
-                ហាងទូរស័ព្ទ: <select name="shop">
-                    <option value="all"> --All-- </option>
+                ហាងទូរស័ព្ទ: <select name="shop" style="padding: 5px 2px;font-size:12px">
+                    <option value="all"> --ទាំងអស់-- </option>
                     @foreach($shops as $s)
                     <option value="{{$s->id}}" {{$s->id==$sh?'selected':''}}>{{$s->name}}</option>
                     @endforeach
+                </select>
+                 ស្ថានភាព: <select name="status" style="padding: 5px 2px;font-size:12px">
+                    <option value="all"> --ទាំងអស់-- </option>
+                    <option value="new" {{$status=='new'?'selected':''}}>ថ្មី</option>
+                    <option value="paying" {{$status=='paying'?'selected':''}}>កំពុងបង់</option>
+                    <option value="paid" {{$status=='paid'?'selected':''}}>បានបញ្ចប់</option>
+                    <option value="stopped" {{$status=='stopped'?'selected':''}}>ឈប់បង់</option>
                 </select>
                 អតិថិជន: <input type="text" name='cus' placeholder="ឈ្មោះ ឬលេខទូរស័ព្ទ" value="{{$cus}}">
                 <button>ស្វែងរក</button>
@@ -93,6 +100,13 @@
                                    >
                                     <i class="fa fa-print"></i>
                                 </a>&nbsp;
+                                @if($loan->status == 'new')
+                                <a href="{{url('loan/edit/'.$loan->id)}}" title="Edit" class='text-warning'
+                                   >
+                                    <i class="fa fa-edit"></i>
+                                </a>&nbsp;
+                                @endif
+                                
                                 <a href="{{url('loan/delete?id='.$loan->id)}}" title="Delete" class='text-danger'
                                    onclick="return confirm('Are you sure to delete?')">
                                     <i class="fa fa-trash"></i>

@@ -36,6 +36,7 @@ class LoanScheduleController extends Controller {
                 ->get();
 
         $data['sh'] = 'all';
+        $data['status'] = 'all';
         $data['q'] = '';
         return view('loanschedules.index', $data);
     }

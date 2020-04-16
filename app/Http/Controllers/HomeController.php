@@ -98,6 +98,7 @@ class HomeController extends Controller
         $data['start'] = $r->start;
         $data['end'] = $r->end;
         $data['q'] = '';
+        $data['status'] = $r->status;
         $q = DB::table('loanschedules')
             ->join('loans', 'loans.id', '=', 'loanschedules.loan_id')
             ->join('customers', 'customers.id', '=', 'loans.customer_id')
@@ -109,6 +110,11 @@ class HomeController extends Controller
         if($r->shop!='all')
         {
             $q = $q->where('phone_shops.id', $r->shop);
+        }
+
+        if($r->status!='all')
+        {
+            $q = $q->where('loanschedules.ispaid', $r->status);
         }
          
         $data['loanschedules'] = $q->select('loanschedules.*', 'customers.name', 'customers.phone' , 'phone_shops.name as shop_name' )
