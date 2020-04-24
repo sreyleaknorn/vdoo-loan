@@ -105,6 +105,14 @@
                         <strong class="text-danger">$ {{number_format($total3, 3)}}</strong>
                     </td>
                 </tr>
+                <tr>
+                    <td colspan="5" class="text-right">
+                        <strong class="text-success">ប្រាក់ចំនេញ</strong>
+                    </td>
+                    <td colspan="3">
+                        <strong class="text-success">$ {{number_format($total3 - $total1, 3)}}</strong>
+                    </td>
+                </tr>
             </tbody>
         </table>
         @else

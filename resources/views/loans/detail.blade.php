@@ -1,40 +1,34 @@
 @extends('layouts.master')
 @section('header')
-<strong>រំលស់</strong>
+<strong>លម្អិត រំលស់</strong>
 @endsection
 @section('content')
 
 <div class="card card-gray">
-    <div class="card-header">
-        <div class="header-block">
-            <p class="title">លម្អិត រំលស់
-                <a href="javascript:history.back();" class="btn btn-primary-outline btn-oval btn-sm mx-left"> 
-                    <i class="fa fa-reply"></i> ត្រលប់ក្រោយ</a> 
-                <a href="{{url('loan/print/'.$loan->id)}}" target="_blank" class="btn btn-success-outline btn-oval btn-sm mx-left">
-                    <i class="fa fa-print"></i> បោះពុម្ព
-                </a>
-                <?php
-                if ($loan->status == 'new' || $loan->status == 'paying') {
-                    ?>
-                    <a href="{{url('loan/stopped?id='.$loan->id)}}" class="btn btn-warning-outline btn-oval btn-sm mx-left" type="button"  data-toggle="modal" data-target="#stopPayment" >
-                        <i class="fa fa-times-circle"></i>​ ឈប់បង់
-                    </a>
-                <?php } ?>
-                @if($loan->status == 'new')
-                    
-                    <a href="{{url('loan/edit/'.$loan->id)}}" class="btn btn-danger-outline btn-oval btn-sm mx-left">
-                    <i class="fa fa-edit"></i> កែប្រែ
-                </a>
-                @endif
-
-                <a href="{{url('loan/delete?id='.$loan->id)}}" class="btn btn-danger-outline btn-oval btn-sm mx-left" onclick="return confirm('អ្នកពិតជាចង់លុបទិន្នន័យ?')">
-                    <i class="fa fa-trash"></i> លុប
-                </a>
-
-            </p>
-        </div>
+    <div class="toolbox">
+        @if($loan->status == 'new')
+            <a href="{{url('loan/edit/'.$loan->id)}}" class="btn btn-primary btn-oval btn-sm">
+            <i class="fa fa-edit"></i> កែប្រែ
+        </a>
+        @endif
+        <a href="{{url('loan/print/'.$loan->id)}}" target="_blank" class="btn btn-primary btn-oval btn-sm">
+            <i class="fa fa-print"></i> បោះពុម្ព
+        </a>
+       
+        <?php
+        if ($loan->status == 'new' || $loan->status == 'paying') {
+            ?>
+            <a href="{{url('loan/stopped?id='.$loan->id)}}" class="btn btn-danger btn-oval btn-sm" data-toggle="modal" data-target="#stopPayment" >
+                <i class="fa fa-times-circle"></i>​ ឈប់បង់
+            </a>
+        <?php } ?>
+        <a href="{{url('loan/delete?id='.$loan->id)}}" class="btn btn-danger btn-oval btn-sm" onclick="return confirm('អ្នកពិតជាចង់លុបទិន្នន័យ?')">
+            <i class="fa fa-trash"></i> លុប
+        </a>
+        <a href="javascript:history.back();" class="btn btn-warning btn-oval btn-sm"> 
+            <i class="fa fa-reply"></i> ថយក្រោយ
+        </a> 
     </div>
-
     <div class="card-block">
         <div class="col-md-11">
             @component('coms.alert')

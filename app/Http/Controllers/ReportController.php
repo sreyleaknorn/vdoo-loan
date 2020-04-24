@@ -71,10 +71,6 @@ class ReportController extends Controller {
         return view('reports.payment', $data);
     }
 
-
-
-
-
     public function print_payment(Request $r) {
 
         $data['sh'] = $r->shop;
