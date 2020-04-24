@@ -129,7 +129,7 @@ class LoanController extends Controller {
             for ($i = 0; $i < $request->num_repayment; $i++) {
                 $timestamp = strtotime($request->start_interest_date);
                 $start_interest_date = date("d-m-Y", $timestamp);
-                $schedule_date = $this->GenerateDateSchedule($start_interest_date, $request->repayment_type, $i + 1);
+                $schedule_date = $this->GenerateDateSchedule($start_interest_date, $request->repayment_type, $i);
                 $array_shcedule = array(
                     'loan_id' => $loan_id,
                     'pay_date' => $schedule_date,
@@ -229,7 +229,7 @@ class LoanController extends Controller {
                 for ($i = 0; $i < $request->num_repayment; $i++) {
                     $timestamp = strtotime($request->start_interest_date);
                     $start_interest_date = date("d-m-Y", $timestamp);
-                    $schedule_date = $this->GenerateDateSchedule($start_interest_date, $request->repayment_type, $i + 1);
+                    $schedule_date = $this->GenerateDateSchedule($start_interest_date, $request->repayment_type, $i);
                     $array_shcedule = array(
                         'loan_id' => $loan_id,
                         'pay_date' => $schedule_date,
