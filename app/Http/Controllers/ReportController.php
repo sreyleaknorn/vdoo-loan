@@ -58,7 +58,7 @@ class ReportController extends Controller {
 
         $data['payments'] = $q->select('loanpayments.*', 'customers.name', 'customers.phone', 'phone_shops.name as shop_name', 'loanschedules.pay_date as pay_date', 'loanschedules.principal_amount as principal_amount', 'loanschedules.interest_amount as interest_amount', 'loanschedules.total_amount as total_amount', 'loanschedules.paid_amount as paid_amount'
                         , 'loanschedules.paid_date as paid_date')
-                ->orderBy('loanpayments.receive_date', 'DESC')
+                ->orderBy('loans.id', 'DESC')
                 ->get();
 
         $data['shops'] = DB::table('phone_shops')
@@ -70,9 +70,6 @@ class ReportController extends Controller {
                 ->get();
         return view('reports.payment', $data);
     }
-
-
-
 
 
     public function print_payment(Request $r) {
@@ -166,6 +163,90 @@ class ReportController extends Controller {
                 ->get();
         $data['com'] = DB::table('companies')->find(1);
         return view('reports.expense-print', $data);
+    }
+
+    public function paid() {
+        if (!Right::check('paid_report', 'l')) {
+            return view('permissions.no');
+        }
+        $data['customers'] = DB::table('customers')
+                ->where('active', 1)
+                ->orderBy('name')
+                ->get();
+
+        $data['start'] = date('Y-m-d');
+        $data['end'] = date('Y-m-d');
+        $data['loans'] = [];
+        $data['shops'] = DB::table('phone_shops')
+                ->where('active', 1)
+                ->get();
+        $data['sh'] = 'all';
+        $data['customer_id'] = 'all';
+        $data['q'] = '';
+        return view('reports.paid', $data);
+    }
+    public function search_paid(Request $r) {
+        if (!Right::check('paid_report', 'l')) {
+            return view('permissions.no');
+        }
+        $data['sh'] = $r->shop;
+        $data['start'] = $r->start;
+        $data['end'] = $r->end;
+        $data['q'] = '';
+        
+        $q = DB::table('loans')
+                 ->join('customers', 'customers.id', '=', 'loans.customer_id')
+                ->join('phone_shops', 'phone_shops.id', '=', 'loans.shop_id')
+                ->where('loans.active', 1)
+                ->where('loans.status', 'paid')
+                ->where('loans.paid_date', '>=', $r->start)
+                ->where('loans.paid_date', '<=', $r->end);
+
+        if ($r->shop != 'all') {
+            $q = $q->where('phone_shops.id', $r->shop);
+        }
+
+
+        $data['loans'] = $q->select('loans.*', 'customers.name', 'customers.phone', 'phone_shops.name as shop_name')
+                ->orderBy('loans.id', 'DESC')
+                ->get();
+
+        $data['shops'] = DB::table('phone_shops')
+                ->where('active', 1)
+                ->get();
+        $data['customers'] = DB::table('customers')
+                ->where('active', 1)
+                ->orderBy('name')
+                ->get();
+        return view('reports.paid', $data);
+    }
+
+    public function print_paid(Request $r) {
+
+        $data['sh'] = $r->shop;
+        $data['start'] = $r->start;
+        $data['end'] = $r->end;
+        $data['q'] = '';
+        $q = DB::table('loans')
+                 ->join('customers', 'customers.id', '=', 'loans.customer_id')
+                ->join('phone_shops', 'phone_shops.id', '=', 'loans.shop_id')
+                ->where('loans.active', 1)
+                ->where('loans.status', 'paid')
+                ->where('loans.paid_date', '>=', $r->start)
+                ->where('loans.paid_date', '<=', $r->end);
+
+        if ($r->shop != 'all') {
+            $q = $q->where('phone_shops.id', $r->shop);
+        }
+
+
+        $data['loans'] = $q->select('loans.*', 'customers.name', 'customers.phone', 'phone_shops.name as shop_name')
+                ->orderBy('loans.id', 'DESC')
+                ->get();
+
+
+        $data['com'] = DB::table('companies')->find(1);
+        return view('reports.paid-print', $data);
     }
 
 }

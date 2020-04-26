@@ -159,6 +159,9 @@
                                         <li id='menu_report2'>
                                             <a href="{{url('report/expense')}}">៧.២ ចំណាយ</a>
                                         </li>
+                                        <li id='menu_report3'>
+                                            <a href="{{url('report/paid')}}">៧.៣ រំលស់បានបញ្ចប់</a>
+                                        </li>
                                     </ul>
                                 </li>
 
