@@ -113,7 +113,7 @@
 						</tr>
 						<?php $revenue =  $total4 - $total1; ?>
 						<tr>
-							<td colspan="5" class="text-right">
+							<td colspan="4" class="text-right">
 								<strong class="text-success">ប្រាក់ចំនេញ</strong>
 							</td>
 							<td colspan="5">
