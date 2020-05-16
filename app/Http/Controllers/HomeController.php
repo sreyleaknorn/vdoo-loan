@@ -65,9 +65,11 @@ class HomeController extends Controller
         {
             return view('permissions.no');
         }
+		
         $q= $r->q;
         $data['q'] = $r->q;
         $data['sh'] = 'all';
+		$data['status'] = '';
         $data['start'] = date('Y-m-d');
         $data['end'] = date('Y-m-d');
         $data['loanschedules'] = DB::table('loanschedules')

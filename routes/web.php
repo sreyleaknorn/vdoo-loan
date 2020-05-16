@@ -80,6 +80,7 @@ Route::get('loanschedule', 'LoanScheduleController@index');
 Route::get('loanschedule/today', 'LoanScheduleController@today');
 Route::get('loanschedule/late', 'LoanScheduleController@late');
 Route::get('schedule/shop/{id}', 'LoanScheduleController@byshop');
+Route::get('loanschedule/print', 'LoanScheduleController@print_schedule');
 
 //// loan schedule
 Route::get('loanpayment', 'LoanPaymentController@index');
