@@ -36,7 +36,7 @@ class LoanScheduleController extends Controller
             ->where([['loanschedules.active', 1]])
             ->where('loanschedules.pay_date', '>=', $data['start'])
             ->where('loanschedules.pay_date', '<=', $data['end'])
-            ->orderBy('loanschedules.pay_date', 'ASC')
+            ->orderBy('loans.id', 'ASC')
             ->paginate(config('app.row'));
         $data['shops'] = DB::table('phone_shops')
             ->where('active', 1)
@@ -119,7 +119,7 @@ class LoanScheduleController extends Controller
             )
             ->where([['loanschedules.active', 1]])
             ->where('loans.shop_id', $id)
-            ->orderBy('loanschedules.pay_date', 'ASC')
+            ->orderBy('loans.id', 'ASC')
             ->paginate(config('app.row'));
         $data['shops'] = DB::table('phone_shops')
             ->where('active', 1)
