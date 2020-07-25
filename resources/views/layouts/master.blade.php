@@ -78,89 +78,105 @@
                                     <a href="{{url('/customer')}}">
                                         ​២. អតិថិជន </a>
                                 </li>
-                                <li id='menu_phone_shop'>
+                                <!-- <li id='menu_phone_shop'>
                                     <a href="{{url('/phoneshop')}}">
                                         ​៣.  ហាងទូរស័ព្ទ</a>
+                                </li> -->
+								<li id='menu_sale'>
+                                    <a href="{{url('/sale')}}">
+                                        ​	៣. អ្នកលក់ </a>
                                 </li>
-
+								<li id='menu_project'>
+                                    <a href="{{url('/project')}}">
+                                        ​៤.  គម្រោង</a>
+                                </li>
+								<li id='menu_land'>
+                                    <a href="{{url('/land')}}">
+                                        ​	៥.ដីឡូតិ៍</a>
+                                </li>
+								<li id='menu_invoice'>
+                                    <a href="{{url('/invoice')}}">
+                                        ​	៦. វិក័យប័ត្រ</a>
+                                </li>
                                 <li id="menu_loan">
-                                    <a href=""> ៤. រំលស់ <i class="fa arrow"></i>
+                                    <a href=""> ៦. រំលស់ <i class="fa arrow"></i>
                                     </a>
                                     <ul class="sidebar-nav" id="loan_collapse">
 
                                         <li id="menu_all_loan">
                                             <a href="{{url('/loan')}}">
-                                                ៤.១. រំលស់
+                                                ៧.១. រំលស់
                                             </a>
                                         </li>
                                         <li id="menu_all_loanschedule">
                                             <a href="{{url('/loanschedule')}}">
-                                                ៤.២. តារាងប្រាក់ត្រូវបង់
+                                                ៧.២. តារាងប្រាក់ត្រូវបង់
                                             </a>
                                         </li>
                                         <li id="menu_all_loanpayment">
                                             <a href="{{url('/loanpayment')}}">
-                                                ៤.៣. តារាងប្រាក់បានបង់
+                                                ៧.៣. តារាងប្រាក់បានបង់
                                             </a>
                                         </li>
                                         <li id="menu_all_paytoday">
                                             <a href="{{url('loanschedule/today')}}">
-                                                ៤.៤. តារាងត្រូវបង់ថ្ងៃនេះ
+                                                ៧.៤. តារាងត្រូវបង់ថ្ងៃនេះ
                                             </a>
                                         </li>
                                         <li id="menu_schedule_late">
                                             <a href="{{url('loanschedule/late')}}">
-                                                ៤.៥. តារាងហួសថ្ងៃបង់
+                                                ៧.៥. តារាងហួសថ្ងៃបង់
                                             </a>
                                         </li>
                                         <li id="menu_loan_stop">
                                             <a href="{{url('loan/stopped')}}">
-                                                ៤.៦.​ រំលស់ឈប់បង់ 
+                                                ៧.៦.​ រំលស់ឈប់បង់ 
                                             </a>
                                         </li>
                                     </ul>
                                 </li>
+								
                                 <li id="menu_config">
                                     <a href="">
-                                        ​៥. ​កំណត់ <i class="fa arrow"></i>
+                                        ​៨. ​កំណត់ <i class="fa arrow"></i>
                                     </a>
                                     <ul class="sidebar-nav" id="config_collapse">
 
                                         <li id="menu_company">
                                             <a href="{{url('company')}}">
-                                                ​៥.១ ក្រុមហ៊ុន
+                                                ​៨.១ ក្រុមហ៊ុន
                                             </a>
                                         </li>
                                     </ul>
                                 </li>
                                 <li  id="menu_security">
                                     <a href="">
-                                        ​៦. ​កំណត់សុវត្ថិភាព  <i class="fa arrow"></i>
+                                        ​៩. ​កំណត់សុវត្ថិភាព  <i class="fa arrow"></i>
                                     </a>
                                     <ul class="sidebar-nav"  id="security_collapse">
                                         <li id='menu_user'>
-                                            <a href="{{url('user')}}">៦.១ អ្នកប្រើប្រាស់</a>
+                                            <a href="{{url('user')}}">៩.១ អ្នកប្រើប្រាស់</a>
                                         </li>
                                         <li id="role_id">
-                                            <a href="{{url('role')}}">៦.២ សិទ្ធប្រើប្រាស់</a>
+                                            <a href="{{url('role')}}">៩.២ សិទ្ធប្រើប្រាស់</a>
                                         </li>
 
                                     </ul>
                                 </li>
                                 <li  id="menu_report">
                                     <a href="">
-                                        ​៧. របាយការណ៍  <i class="fa arrow"></i>
+                                        ​១០. របាយការណ៍  <i class="fa arrow"></i>
                                     </a>
                                     <ul class="sidebar-nav"  id="report_collapse">
                                         
                                         <li id='menu_report1'>
-                                            <a href="{{url('report/payment')}}">៧.១ ចំណូល</a>
+                                            <a href="{{url('report/payment')}}">១០.១ ចំណូល</a>
                                         </li>
                                         <li id='menu_report2'>
-                                            <a href="{{url('report/expense')}}">៧.២ ចំណាយ</a>
+                                            <a href="{{url('report/expense')}}">១០.២ ចំណាយ</a>
                                         </li>
                                         <li id='menu_report3'>
-                                            <a href="{{url('report/paid')}}">៧.៣ រំលស់បានបញ្ចប់</a>
+                                            <a href="{{url('report/paid')}}">១០.៣ រំលស់បានបញ្ចប់</a>
                                         </li>
                                     </ul>
                                 </li>

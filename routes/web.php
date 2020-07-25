@@ -16,6 +16,14 @@ Route::get('home', 'HomeController@index');
 Route::get('logout', 'UserController@logout');
 Auth::routes();
 
+//// sale land 
+Route::get('project', 'ProjectController@index');
+Route::get('project/create', 'ProjectController@create');
+Route::get('land', 'LandController@index');
+Route::get('land/create', 'LandController@create');
+Route::get('sale', 'UserController@sale');
+Route::get('invoice', 'HomeController@invoice');
+
 // search
 Route::get('search', 'HomeController@search');
 Route::get('search-all', 'HomeController@search_all');

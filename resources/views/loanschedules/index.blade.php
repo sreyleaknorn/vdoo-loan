@@ -58,7 +58,7 @@
 									<th>#</th>
 									<th>លេខសំគាល់</th>
 									<th>អតិថិជន</th>
-									<th>ហាង</th>
+									<!-- <th>ហាង</th> -->
 									<th>ថ្ងៃត្រូវបង់</th>
 									<th>ប្រាក់ដើម</th>
 									<th>ការប្រាក់</th>
@@ -89,7 +89,7 @@
 										<a href="{{url('loan/detail/'.$ls->loan_id )}}"><span class="text-teal"><strong>L{{sprintf("%04s",$ls->loan_id )}}</strong></span></a>   
 									</td>
 									<td>{{$ls->name}}</td>
-									<td>{{$ls->shop_name}}</td>
+									<!-- <td>{{$ls->shop_name}}</td> -->
 									<td>{{$ls->pay_date}}</td>
 									<td>${{number_format($ls->principal_amount,3)}}</td>
 									<td>${{number_format($ls->interest_amount,3)}}</td>

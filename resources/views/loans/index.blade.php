@@ -9,7 +9,7 @@
             <i class="fa fa-plus-circle"></i> បង្កើត
         </a>
 
-        <form action="{{url('loan/search')}}">
+<form action="{{url('loan/search')}}">
             <p>
                 ហាងទូរស័ព្ទ: <select name="shop" style="padding: 5px 2px;font-size:12px">
                     <option value="all"> --ទាំងអស់-- </option>
@@ -41,8 +41,8 @@
                             <th>#</th>
                             <th>លេខសំគាល់</th>
                             <th>អតិថិជន</th>
-                            <th>ហាងទូរស័ព្ទ</th>
-                            <th>ឈ្មោះទូរស័ព្ទ</th>
+                            <!--<th>ហាងទូរស័ព្ទ</th>
+                            <th>ឈ្មោះទូរស័ព្ទ</th> -->
                             <th>ចំនួនខ្ចី</th>
                             <th>ការប្រាក់</th>
                             <th>សរុប</th>
@@ -87,8 +87,8 @@
                             <td>
                                 <a href="{{url('loan/detail/'.$loan->id)}}"><span class="text-teal"><strong>L{{sprintf("%04s",$loan->id)}}</strong></span></a>   </td>
                             <td><a href="{{url('loan/detail/'.$loan->id)}}">{{$loan->name}}</a></td>
-                            <td>{{$loan->model_name}}</td>
-                            <td>{{$loan->shop_name}}</td>
+                           <!-- <td>{{$loan->model_name}}</td>
+                            <td>{{$loan->shop_name}}</td> -->
                             <td>${{number_format($loan->loan_amount,3)}}</td>
                             <td>{{$loan->loan_interest}}%</td>
                             <td>${{number_format($loan->total_amount,3)}}</td>

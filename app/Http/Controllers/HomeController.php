@@ -128,4 +128,10 @@ class HomeController extends Controller
             ->get();
         return view('loanschedules.index', $data);
     }
+	
+	public function invoice()
+    {
+        
+        return view('invoices.index');
+    }
 }
