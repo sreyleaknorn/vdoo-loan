@@ -76,3 +76,10 @@ label{
 div.stat div.name{
     padding: 4px 0;
 }
+.land_card {
+	font-size: 12px;
+	border-radius: 5px;
+}
+.land_card .badge{
+	font-size: 90%;
+}

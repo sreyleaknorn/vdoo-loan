@@ -159,6 +159,12 @@ class UserController extends Controller
             return redirect('user/profile')->with('error', 'Fail to save data, please check again!');
         }
     }
+	public function sale()
+    {
+       
+        return view("sales.index");
+    }
+	
     // user sign out
     public function logout()
     {

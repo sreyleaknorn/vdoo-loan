@@ -139,7 +139,9 @@
         </div>
 
 		@else
-			មិនមានទិន្នន័យ
+			@if(isset($_GET['status']))
+				មិនមានទិន្នន័យ
+			@endif
 		@endif
        
           

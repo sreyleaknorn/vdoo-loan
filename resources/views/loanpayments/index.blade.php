@@ -36,7 +36,7 @@
                             <th>#</th>
                             <th>លេខសំគាល់</th>
                             <th>អតិថិជន</th>
-                            <th>ហាង</th>
+                            <!-- <th>ហាង</th> -->
                             <th>ប្រាក់ទទួលបាន</th>
                             <th>ថ្ងៃទទួលប្រាក់</th>
                             <th>សកម្មភាព</th>
@@ -57,7 +57,7 @@
                                 <a href="{{url('loan/detail/'.$pm->loan_id )}}"><span class="text-teal"><strong>L{{sprintf("%04s",$pm->loan_id )}}</strong></span></a>   
                             </td>
                             <td>{{$pm->name}}</td>
-                            <td>{{$pm->shop_name}}</td>
+                            <!-- <td>{{$pm->shop_name}}</td> -->
                             <td>${{number_format($pm->receive_amount,3)}}</td>
                             <td>{{$pm->receive_date}}</td>
                             <td>
