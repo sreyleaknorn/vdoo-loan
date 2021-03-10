@@ -92,6 +92,7 @@ class LoanController extends Controller {
             'loan_date' => 'required',
             'loan_amount' => 'required',
             'loan_interest' => 'required',
+            'loan_type' => 'required',
             'num_repayment' => 'required'
         ]);
         $num_repayment = $request->num_repayment;
@@ -114,6 +115,7 @@ class LoanController extends Controller {
             'loan_date' => $request->loan_date,
             'release_date' => $request->release_date,
             'num_repayment' => $request->num_repayment,
+            'loan_type' => $request->loan_type,
             'repayment_type' => $request->repayment_type,
             'start_interest_date' => $request->start_interest_date,
             'note' => $request->note,
@@ -130,6 +132,14 @@ class LoanController extends Controller {
                 $timestamp = strtotime($request->start_interest_date);
                 $start_interest_date = date("d-m-Y", $timestamp);
                 $schedule_date = $this->GenerateDateSchedule($start_interest_date, $request->repayment_type, $i);
+
+                if($request->loan_type == "បង់តែការប្រាក់"){
+                    if(($i+1) == $request->num_repayment){
+                        $schedule_amount = $request->loan_amount;
+                    }else {
+                        $schedule_amount = 0;
+                    }
+                }
                 $array_shcedule = array(
                     'loan_id' => $loan_id,
                     'pay_date' => $schedule_date,
@@ -139,6 +149,7 @@ class LoanController extends Controller {
                     'due_amount' => $schedule_interest + $schedule_amount
                 );
                 DB::table('loanschedules')->insertGetId($array_shcedule);
+                
             }
         }
         return redirect('/loan');
@@ -211,6 +222,7 @@ class LoanController extends Controller {
             'note' => $request->note,
             'total_interest' => $total_interest,
             'total_amount' => $total_amount,
+            'loan_type' => $request->loan_type,
             'due_amount' => $total_amount
         );
 
@@ -230,6 +242,14 @@ class LoanController extends Controller {
                     $timestamp = strtotime($request->start_interest_date);
                     $start_interest_date = date("d-m-Y", $timestamp);
                     $schedule_date = $this->GenerateDateSchedule($start_interest_date, $request->repayment_type, $i);
+
+                    if($request->loan_type == "បង់តែការប្រាក់"){
+                        if(($i+1) == $request->num_repayment){
+                            $schedule_amount = $request->loan_amount;
+                        }else {
+                            $schedule_amount = 0;
+                        }
+                    }
                     $array_shcedule = array(
                         'loan_id' => $loan_id,
                         'pay_date' => $schedule_date,
@@ -265,7 +285,10 @@ class LoanController extends Controller {
         $data['stop_payments'] = DB::table('stop_payments')
                 ->where([['active', 1], ['loan_id', $id]])
                 ->get();
-
+        $data['tt_payment'] = DB::table('loanpayments')
+                ->where('active', 1)
+                ->where('loan_id', $id)
+                ->sum('receive_amount');
         return view('loans.detail', $data);
     }
 
@@ -599,6 +622,89 @@ class LoanController extends Controller {
         return view('loans.stop', $data);
     }
 
+    public function print_loan() {
+        if (!Right::check('loan', 'l')) {
+            return view('permissions.no');
+        }
+        $data['loans'] = [];
+        $data['shops'] = DB::table('phone_shops')
+                ->where('active', 1)
+                ->get();
+        $data['sh'] = 'all';
+        $data['cus'] = '';
+        $data['status'] = 'all';
+        return view('loans.print_loan', $data);
+    }
+    
+    public function search_print_loan(Request $r) {
+        if (!Right::check('loan', 'l')) {
+            return view('permissions.no');
+        }
+        $q = DB::table('loans')
+                ->join('customers', 'customers.id', '=', 'loans.customer_id')
+                ->join('phone_shops', 'phone_shops.id', '=', 'loans.shop_id')
+                ->where('loans.active', 1);
+        if ($r->shop != 'all') {
+            $q = $q->where('phone_shops.id', $r->shop);
+        }  
+        if ($r->status != 'all') {
+            $q = $q->where('loans.status', $r->status);
+        }     
+        $cus = $r->cus;
+        if($r->cus != ''){
+            $q = $q->where(function($query) use ($cus){
+                $query = $query->orWhere('customers.name', 'like', "%{$cus}%")
+                    ->orWhere('customers.phone', 'like', "%{$cus}%");
+            });
+        }
+        $data['loans'] = $q->select('loans.*', 'customers.name', 'customers.phone', 'phone_shops.name as shop_name')
+                ->orderBy('loans.id', 'DESC')
+                ->get();
+        $data['shops'] = DB::table('phone_shops')
+                ->where('active', 1)
+                ->get();
+        $data['sh'] = $r->shop;
+        $data['cus'] = $r->cus;
+        $data['status'] = $r->status;
+        return view('loans.print_loan', $data);
+    }
+
+    public function _print_loan(Request $r) {
+        if (!Right::check('loan', 'l')) {
+            return view('permissions.no');
+        }
+        $q = DB::table('loans')
+                ->join('customers', 'customers.id', '=', 'loans.customer_id')
+                ->join('phone_shops', 'phone_shops.id', '=', 'loans.shop_id')
+                ->where('loans.active', 1);
+        if ($r->shop != 'all') {
+            $q = $q->where('phone_shops.id', $r->shop);
+        }  
+        if ($r->status != 'all') {
+            $q = $q->where('loans.status', $r->status);
+        }     
+        $cus = $r->cus;
+        if($r->cus != ''){
+            $q = $q->where(function($query) use ($cus){
+                $query = $query->orWhere('customers.name', 'like', "%{$cus}%")
+                    ->orWhere('customers.phone', 'like', "%{$cus}%");
+            });
+        }
+        $data['loans'] = $q->select('loans.*', 'customers.name', 'customers.phone', 'phone_shops.name as shop_name')
+                ->orderBy('loans.id', 'DESC')
+                ->get();
+        $data['shops'] = DB::table('phone_shops')
+                ->where('active', 1)
+                ->get();
+        $data['sh'] = $r->shop;
+        $data['cus'] = $r->cus;
+        $data['status'] = $r->status;
+        $data['com'] = DB::table('companies')
+                ->where('id', 1)
+                ->first();
+        return view('loans._print_loan', $data);
+    }
+
     public function delete(Request $r) {
         if (!Right::check('loan', 'd')) {
             return view('permissions.no');
@@ -615,6 +721,7 @@ class LoanController extends Controller {
         $r->session()->flash('success', 'ទិន្នន័យត្រូវបានលុប!');
         return redirect('loan');
     }
+    
 
     public function GenerateDateSchedule($startdate, $types, $sequence) {
         $date = '';

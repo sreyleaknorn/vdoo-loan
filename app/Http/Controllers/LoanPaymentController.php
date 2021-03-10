@@ -142,6 +142,9 @@ class LoanPaymentController extends Controller {
             $due_amount = $loandata->total_amount - $paid_amount;
 
             if ($due_amount <= 0 || $due_amount < 0.01) {
+                if($due_amount < 0.01){
+                    $due_amount = 0;
+                }
                 $status = 'paid';
                 $paid_date = $paid_date;
             } else {

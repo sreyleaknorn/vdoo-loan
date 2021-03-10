@@ -104,6 +104,21 @@
 						</div>
 					</div>
 					<div class="form-group row">
+                        <label class="col-sm-3">ប្រភេទបង់ <span class="text-danger">*</span></label>
+                        <div class="col-sm-8">
+							<div>
+								<label>
+									<input class="radio" name="loan_type" type="radio" value="បង់ទាំងប្រាក់ដើមនិងការ" checked="{{$loan->loan_type=='បង់ទាំងប្រាក់ដើមនិងការ'?'checked':''}}">
+									<span>បង់ទាំងប្រាក់ដើមនិងការ</span>
+								</label>
+								<label>
+									<input class="radio" name="loan_type" type="radio" value="បង់តែការប្រាក់" checked="{{$loan->loan_type=='បង់តែការប្រាក់'?'checked':''}}">
+									<span>បង់តែការប្រាក់</span>
+								</label>
+                            </div>
+						</div>
+					</div>
+					<div class="form-group row">
                         <label class="col-sm-3">ថ្ងៃខ្ចី <span class="text-danger">*</span></label>
                         <div class="col-sm-8">
                             <input type="date" name='loan_date' id="loan_date" 

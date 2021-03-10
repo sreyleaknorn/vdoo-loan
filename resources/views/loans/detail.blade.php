@@ -92,6 +92,39 @@
                             : {{$loan->note}}
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label for="due_date" class="col-sm-5 form-control-label">ប្រភេទ</label>
+                        <div class="col-sm-7">
+                            : {{$loan->loan_type}}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="due_date" class="col-sm-5 form-control-label">ស្ថានភាព</label>
+                        <div class="col-sm-7">
+                            <?php
+                            $status = $loan->status;
+                            $color = '';
+                            switch ($status) {
+                                case "new":
+                                    $status = "ថ្មី";
+                                    $color = 'badge-primary';
+                                    break;
+                                case "paying":
+                                    $status = "កំពុងបង់";
+                                    $color = 'badge-warning';
+                                    break;
+                                case "paid":
+                                    $status = "បានបញ្ចប់";
+                                    $color = 'badge-success';
+                                    break;
+                                default:
+                                    $color = 'badge-danger';
+                                    $status = "ឈប់បង់";
+                            }
+                            ?>
+                            : <span class="badge {{$color}}">{{$status}}</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group row">
@@ -148,33 +181,18 @@
                             : {{$loan->paid_date}}
                         </div>
                     </div>
+                    
+                    @if($loan->status == "paid")
                     <div class="form-group row">
-                        <label for="due_date" class="col-sm-5 form-control-label">ស្ថានភាព</label>
+                        <label for="due_date" class="col-sm-5 form-control-label">ប្រាក់ចំណេញ</label>
                         <div class="col-sm-7">
                             <?php
-                            $status = $loan->status;
-                            $color = '';
-                            switch ($status) {
-                                case "new":
-                                    $status = "ថ្មី";
-                                    $color = 'badge-primary';
-                                    break;
-                                case "paying":
-                                    $status = "កំពុងបង់";
-                                    $color = 'badge-warning';
-                                    break;
-                                case "paid":
-                                    $status = "បានបញ្ចប់";
-                                    $color = 'badge-success';
-                                    break;
-                                default:
-                                    $color = 'badge-danger';
-                                    $status = "ឈប់បង់";
-                            }
+                                $profit = $tt_payment - $loan->loan_amount;
                             ?>
-                            : <span class="badge {{$color}}">{{$status}}</span>
+                            : $ {{number_format($profit,2)}}
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
 

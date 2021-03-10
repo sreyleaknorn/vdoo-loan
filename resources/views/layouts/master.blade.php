@@ -118,6 +118,11 @@
                                                 ៤.៦.​ រំលស់ឈប់បង់ 
                                             </a>
                                         </li>
+                                        <li id="menu_print_loan">
+                                            <a href="{{url('loan/print_loan')}}">
+                                                ៤.៧. Print រំលស់
+                                            </a>
+                                        </li>
                                     </ul>
                                 </li>
                                 <li id="menu_config">

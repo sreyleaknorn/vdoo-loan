@@ -100,3 +100,7 @@ Route::get('report/expense/print', 'ReportController@print_expense');
 Route::get('report/paid', 'ReportController@paid');
 Route::get('report/paid/search', 'ReportController@search_paid');
 Route::get('report/paid/print', 'ReportController@print_paid');
+
+Route::get('loan/print_loan', 'LoanController@print_loan');
+Route::get('print_loan/search', 'LoanController@search_print_loan');
+Route::get('print_loan/print', 'LoanController@_print_loan');

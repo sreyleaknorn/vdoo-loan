@@ -18,7 +18,7 @@
 			@endcomponent
 			<div class="row">
 				
-				<div class="col-sm-7">
+				<div class="col-sm-8">
 					
 					{{csrf_field()}}
 					<div class="form-group row">
@@ -93,7 +93,7 @@
 					
 					<div class="form-group row">
                         <label class="col-sm-3">ចំនួនរយៈពេល<span class="text-danger">*</span></label>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <input type="number" class="form-control inputnumber"  min="1"  name="num_repayment" value="{{old('num_repayment')}}" required>
 						</div>
                         <div class="col-sm-3">
@@ -103,6 +103,22 @@
                                 <option value="Month" selected>Month</option>
                                 <option value="Year">Year</option>
 							</select>
+						</div>
+						
+					</div>
+					<div class="form-group row">
+                        <label class="col-sm-3">ប្រភេទបង់ <span class="text-danger">*</span></label>
+                        <div class="col-sm-8">
+							<div>
+								<label>
+									<input class="radio" name="loan_type" type="radio" value="បង់ទាំងប្រាក់ដើមនិងការ" checked="checked">
+									<span>បង់ទាំងប្រាក់ដើមនិងការ</span>
+								</label>
+								<label>
+									<input class="radio" name="loan_type" type="radio" value="បង់តែការប្រាក់">
+									<span>បង់តែការប្រាក់</span>
+								</label>
+                            </div>
 						</div>
 					</div>
 					<div class="form-group row">

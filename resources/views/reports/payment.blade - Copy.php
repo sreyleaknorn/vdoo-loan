@@ -62,7 +62,6 @@
                         $total4 += $p->total_amount;
                         
                     } else {
-                        
                         $dubplicate = 1;
                     }
 

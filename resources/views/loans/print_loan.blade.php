@@ -5,11 +5,12 @@
 @section('content')
 <div class="card card-gray">
     <div class="toolbox">
-        <a href="{{url('loan/create')}}"class="btn btn-primary btn-oval btn-sm">
-            <i class="fa fa-plus-circle"></i> បង្កើត
+        
+		<a href="{{url('print_loan/print?shop='.$sh.'&status='.$status.'&cus='.$cus)}}" target="_blank" class="btn btn-primary btn-oval btn-sm">
+            <i class="fa fa-print"></i> បោះពុម្ព
         </a>
 
-        <form action="{{url('loan/search')}}">
+        <form action="{{url('print_loan/search')}}">
             <p>
                 ហាងទូរស័ព្ទ: <select name="shop" style="padding: 5px 2px;font-size:12px">
                     <option value="all"> --ទាំងអស់-- </option>
@@ -33,6 +34,15 @@
 
         @component('coms.alert')
         @endcomponent
+		
+		@if(count($loans) > 0)
+		<?php 
+		$num_sch_arr = array();
+		foreach($loans as $loan){
+			$num_sch_arr[] =  DB::table('loanschedules')->where('loanschedules.active', 1)->where('loan_id',$loan->id)->orderBy('pay_date', 'ASC')->count();
+		}
+		$num_col =  max($num_sch_arr);
+			?>
         <div class="table-flip-scroll">
             <div class="table-responsive">
                 <table class="table table-sm table-striped table-bordered table-hover flip-content">
@@ -41,14 +51,13 @@
                             <th>#</th>
                             <th>លេខសំគាល់</th>
                             <th>អតិថិជន</th>
-                            <th>ឈ្មោះទូរស័ព្ទ</th>
+                            <th>លេខទូរស័ព្ទ</th>
                             <th>ហាងទូរស័ព្ទ</th>
-                            <th>ចំនួនខ្ចី</th>
-                            <th>ការប្រាក់</th>
-                            <th>សរុប</th>
-                            <th>បានបង់</th>
-                            <th>នៅខ្វះ</th>
-                            <th>ស្ថានភាព</th>
+                            <th>ជំពាក់</th>
+							@for($x = 1;$x<=$num_col;$x++)
+							<th>លើកទី{{$x}}</th>
+							@endfor
+							<th>ស្ថានភាព</th>
                             <th>សកម្មភាព</th>
                         </tr>
                     </thead>
@@ -81,20 +90,29 @@
                                     $color = 'badge-danger';
                                     $status = "ឈប់បង់";
                             }
+							$schedules = DB::table('loanschedules')->where('loanschedules.active', 1)->where('loan_id', $loan->id)->orderBy('pay_date', 'ASC')->get();
                             ?>
 
                             <td>{{$i++}}</td>
                             <td>
                                 <a href="{{url('loan/detail/'.$loan->id)}}"><span class="text-teal"><strong>L{{sprintf("%04s",$loan->id)}}</strong></span></a>   </td>
                             <td><a href="{{url('loan/detail/'.$loan->id)}}">{{$loan->name}}</a></td>
-                            <td>{{$loan->model_name}}</td>
+                            <td>{{$loan->phone}}</td>
                             <td>{{$loan->shop_name}}</td>
-                            <td>${{number_format($loan->loan_amount,3)}}</td>
-                            <td>{{$loan->loan_interest}}%</td>
-                            <td>${{number_format($loan->total_amount,3)}}</td>
-                            <td>${{number_format($loan->paid_amount,3)}}</td>
                             <td>${{number_format($loan->due_amount,3)}}</td>
-                            <td><span class="badge {{$color}}">{{$status}}</span></td>
+							
+							@foreach($schedules as $sch)
+							<td>${{number_format($sch->due_amount,3)}}</td>
+							@endforeach
+							<?php
+								$s = $num_col -  count($schedules);
+								if($s > 0){
+									for($ss = 1;$ss<=$s;$ss++){
+										echo '<td></td>';
+									}
+								}
+							?>
+							<td><span class="badge {{$color}}">{{$status}}</span></td>
                             <td class="action">
                                 <a target="_new" href="{{url('loan/print/'.$loan->id)}}" title="Print" class='text-success'
                                    >
@@ -119,8 +137,12 @@
                 </table>
             </div>
         </div>
+
+		@else
+			មិនមានទិន្នន័យ
+		@endif
        
-          {{ $loans->appends(request()->input())->links() }}
+          
 
     </div>
 </div>
@@ -134,7 +156,7 @@
 
         $("#menu_loan").addClass("active open");
         $("#loan_collapse").addClass("collapse in");
-        $("#menu_all_loan").addClass("active");
+        $("#menu_print_loan").addClass("active");
     });
 
 </script>
